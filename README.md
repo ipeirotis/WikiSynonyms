@@ -45,7 +45,7 @@ Build
 
 1,2,3 trivial.
 
-4. After you have a db you create the table described:
+4, After you have a db you create the table described in No 4:
 
 <pre> CREATE TABLE page_relation (
   sid int unsigned NOT NULL default 0,

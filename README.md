@@ -47,7 +47,7 @@ Build
 
 4, After you have a db you create the table described in No 4:
 
-<pre> CREATE TABLE page_relation (
+<pre>CREATE TABLE page_relation (
   sid int unsigned NOT NULL default 0,
   tid int unsigned NOT NULL default 0,
   snamespace int NOT NULL,
@@ -59,7 +59,7 @@ Build
 
 and after that you can populate that
 
-<pre> INSERT IGNORE INTO page_relation
+<pre>INSERT IGNORE INTO page_relation
 SELECT s.rd_from as sid, 
       t.page_id as tid, 
       p.page_namespace as snamespace,
@@ -68,4 +68,4 @@ SELECT s.rd_from as sid,
       t.page_title as ttitle 
 FROM redirect s 
 JOIN page p ON (s.rd_from = p.page_id)
-JOIN page t ON (s.rd_namespace = t.page_namespace AND s.rd_title = t.page_title) </pre>
+JOIN page t ON (s.rd_namespace = t.page_namespace AND s.rd_title = t.page_title)</pre>

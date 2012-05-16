@@ -37,3 +37,38 @@ d. using the base page title, return as synonyms all the terms that redirect *to
 [Optional component: Check for disambiguation pages, using the "category" table in Wikipedia, and marking as disambiguation pages all pages within http://en.wikipedia.org/wiki/Category:Disambiguation_pages You will need to fetch a the extra necessary tables from http://dumps.wikimedia.org/enwiki/latest/ ]
 
 [Optional component: Restrict the entries in the page table to be only entries for which we know to be an "oDesk skill" and we have a Wikipedia page. We will provide you with the dictionary of skills that we use within oDesk] 
+
+
+
+Build
+=====
+
+1,2,3 trivial.
+
+4. After you have a db you create the table described:
+
+[code]
+
+CREATE TABLE page_relation (
+  sid int unsigned NOT NULL default 0,
+  tid int unsigned NOT NULL default 0,
+  snamespace int NOT NULL,
+  tnamespace int NOT NULL,
+  stitle varchar(255) binary NOT NULL,
+  ttitle varchar(255) binary NOT NULL,
+  PRIMARY KEY (sid, tid)
+)
+
+[/code]
+
+and after that you can populate that
+
+[code]
+
+INSERT IGNORE INTO page_relation
+SELECT s.rd_from as sid, t.page_id as tid, p.page_namespace as snamespace, t.page_namespace as tnamespace, p.page_title as stitle, t.page_title as ttitle 
+FROM redirect s 
+JOIN page p ON (s.rd_from = p.page_id)
+JOIN page t ON (s.rd_namespace = t.page_namespace AND s.rd_title = t.page_title)
+
+[/code]

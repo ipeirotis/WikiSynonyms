@@ -52,9 +52,9 @@ gunzip page.sql.gz
 curl http://dumps.wikimedia.org/enwiki/latest/enwiki-latest-redirect.sql.gz -o redirect.sql.gz
 gunzip redirect.sql.gz
 
-mysql --host=ipeirotis.cehovbssb5oe.us-east-1.rds.amazonaws.com --user=ipeirotis --pass=uG27CYbuZrSwzLx8 ipeirotis &lt; redirect.sql
+mysql --host=... --user=... --pass=... ipeirotis &lt; redirect.sql
 
-mysql --host=ipeirotis.cehovbssb5oe.us-east-1.rds.amazonaws.com --user=ipeirotis --pass=uG27CYbuZrSwzLx8 ipeirotis &lt; page.sql
+mysql --host=... --user=... --pass=... ipeirotis &lt; page.sql
 </pre>
 
 These commands take approximately 2 hours to execute on Amazon RDS/MySQL (5 minutes for redirect.sql, two hours for page.sql), using the db.m2.4xlarge instance class. The tables are big, and you will need at least 10Gb free (preferably more, for peace of mind). Expect 6-7M entries in the redirect table and 27-30M entries for the page table.
@@ -90,8 +90,27 @@ Since the queries will be executed mainly on the stitle and ttitle attributes, o
 
 <pre>
 CREATE INDEX ix_stitle 
-  ON ipeirotis.page_relation (stitle)
+  ON page_relation (stitle)
   
 CREATE INDEX ix_ttitle 
-  ON ipeirotis.page_relation (ttitle)
+  ON page_relation (ttitle)
 </pre>
+
+Note
+====
+
+We do not need to worry about chains of redirects. The query
+
+<pre>
+SELECT
+  sid,
+	tid,
+	snamespace,
+	tnamespace,
+	stitle,
+	ttitle
+FROM
+	page_relation WHERE tid IN (SELECT sid FROM page_relation);
+</pre>
+
+returns very few results, which are already fixed in the actual Wikipedia (so there seems to be an automatic process that fixes that part)

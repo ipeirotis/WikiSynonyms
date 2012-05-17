@@ -43,7 +43,21 @@ d. using the base page title, return as synonyms all the terms that redirect *to
 Build
 =====
 
-1,2,3 trivial.
+Steps 1-3:
+
+<pre>
+curl http://dumps.wikimedia.org/enwiki/latest/enwiki-latest-page.sql.gz -o page.sql.gz
+gunzip page.sql.gz
+
+curl http://dumps.wikimedia.org/enwiki/latest/enwiki-latest-redirect.sql.gz -o redirect.sql.gz
+gunzip redirect.sql.gz
+
+mysql --host=ipeirotis.cehovbssb5oe.us-east-1.rds.amazonaws.com --user=ipeirotis --pass=uG27CYbuZrSwzLx8 ipeirotis < redirect.sql
+
+mysql --host=ipeirotis.cehovbssb5oe.us-east-1.rds.amazonaws.com --user=ipeirotis --pass=uG27CYbuZrSwzLx8 ipeirotis < page.sql
+</pre>
+
+These commands take approximately 2 hours to execute on Amazon RDS/MySQL (5 minutes for redirect.sql, two hours for page.sql), using the db.m2.4xlarge instance class. The tables are big, and you will need at least 10Gb free (preferably more, for peace of mind). Expect 6-7M entries in the redirect table and 27-30M entries for the page table.
 
 4, After you have a db you create the table described in No 4:
 
@@ -69,3 +83,15 @@ SELECT s.rd_from as sid,
 FROM redirect s 
 JOIN page p ON (s.rd_from = p.page_id)
 JOIN page t ON (s.rd_namespace = t.page_namespace AND s.rd_title = t.page_title)</pre>
+
+This query will need approximately an hour to execute and the table will have 6M-7M entries. 
+
+Since the queries will be executed mainly on the stitle and ttitle attributes, once you create the page_relation table, you will want to create indexes on these attributes
+
+<pre>
+CREATE INDEX ix_stitle 
+  ON ipeirotis.page_relation (stitle)
+  
+CREATE INDEX ix_ttitle 
+  ON ipeirotis.page_relation (ttitle)
+</pre>

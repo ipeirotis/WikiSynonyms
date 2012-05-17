@@ -113,3 +113,34 @@ WHERE 1
 -- JOIN page p ON (s.rd_from = p.page_id)
 -- JOIN page t ON (s.rd_namespace = t.page_namespace AND s.rd_title = t.page_title)
 -- )
+
+
+
+--TEST DATA --
+
+INSERT INTO `page` (`page_id`, `page_namespace`, `page_title`, `page_is_redirect`) VALUES
+(1, 0, 'UK', 1),
+(2, 0, 'UnitedKindom', 1),
+(3, 0, 'Gbr', 1),
+(4, 0, 'United_Kindom', 0),
+(5, 0, 'GB', 1),
+(6, 0, 'Car', 1),
+(7, 0, 'Automobile', 0);
+
+
+INSERT INTO `redirect` (`rd_from`, `rd_namespace`, `rd_title`) VALUES
+(6, 0, 'Car'),
+(3, 0, 'Gbr'),
+(5, 0, 'GB'),
+(1, 0, 'UK'),
+(2, 0, 'United_Kindom');
+
+
+
+SELECT p.page_id FROM page p JOIN page_relation pr ON (p.page_id = pr.tid) WHERE p.page_is_redirect = 1;
+
+
+
+CREATE INDEX ix_sid ON page_relation (sid)
+  
+CREATE INDEX ix_tid ON page_relation (tid)

@@ -86,9 +86,10 @@ JOIN page t ON (s.rd_namespace = t.page_namespace AND s.rd_title = t.page_title)
 
 This query will need approximately an hour to execute and the table will have 6M-7M entries. 
 
-Since the queries will be executed mainly on the stitle and ttitle attributes, once you create the page_relation table, you will want to create indexes on these attributes
+Since the queries will be executed mainly on that table, once you create the page_relation table, you will want to create indexes on all attributes
 
 <pre>
+<<<<<<< HEAD
 CREATE INDEX ix_stitle 
   ON page_relation (stitle)
   
@@ -114,3 +115,34 @@ FROM
 </pre>
 
 returns very few results, which are already fixed in the actual Wikipedia (so there seems to be an automatic process that fixes that part)
+=======
+CREATE INDEX ix_stitle ON ipeirotis.page_relation (stitle)
+  
+CREATE INDEX ix_ttitle ON ipeirotis.page_relation (ttitle)
+
+CREATE INDEX ix_sid ON ipeirotis.page_relation (sid)
+  
+CREATE INDEX ix_tid ON ipeirotis.page_relation (tid)
+</pre>
+
+
+5, For this part of the project we created a mini platform with 2 actions (search and ajax).
+Search action implements a graphical representation of the search results whereas Ajax performs as service an return a json encoded data set.
+
+A. Search
+
+By visiting project/index.php you are asked to enter a term to search and if synonyms found they are return as an ordered list.
+
+B. Ajax
+
+By visiting project/index.php?action=ajax&term=OUR TERM the search results are returned as a json encoded array {synonyms:[],total:NUM}.
+
+
+The search is done by to queries (if needed) and 1 iteration of the first query results:
+
+<pre>
+SELECT * FROM page_relation WHERE (stitle = 'TERM' OR ttitle = 'TERM') AND snamespace = 0 AND tnamespace = 0;
+
+SELECT * FROM page_relation WHERE tid IN ARRAY_OF_BASE_PAGE_IDS_FROM_ITERATION;
+</pre>
+>>>>>>> Implementation of no5

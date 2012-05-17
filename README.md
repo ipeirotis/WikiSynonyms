@@ -89,12 +89,13 @@ This query will need approximately an hour to execute and the table will have 6M
 Since the queries will be executed mainly on that table, once you create the page_relation table, you will want to create indexes on all attributes
 
 <pre>
-<<<<<<< HEAD
-CREATE INDEX ix_stitle 
-  ON page_relation (stitle)
+CREATE INDEX ix_stitle ON ipeirotis.page_relation (stitle)
   
-CREATE INDEX ix_ttitle 
-  ON page_relation (ttitle)
+CREATE INDEX ix_ttitle ON ipeirotis.page_relation (ttitle)
+
+CREATE INDEX ix_sid ON ipeirotis.page_relation (sid)
+  
+CREATE INDEX ix_tid ON ipeirotis.page_relation (tid)
 </pre>
 
 Note
@@ -115,15 +116,6 @@ FROM
 </pre>
 
 returns very few results, which are already fixed in the actual Wikipedia (so there seems to be an automatic process that fixes that part)
-=======
-CREATE INDEX ix_stitle ON ipeirotis.page_relation (stitle)
-  
-CREATE INDEX ix_ttitle ON ipeirotis.page_relation (ttitle)
-
-CREATE INDEX ix_sid ON ipeirotis.page_relation (sid)
-  
-CREATE INDEX ix_tid ON ipeirotis.page_relation (tid)
-</pre>
 
 
 5, For this part of the project we created a mini platform with 2 actions (search and ajax).
@@ -145,4 +137,3 @@ SELECT * FROM page_relation WHERE (stitle = 'TERM' OR ttitle = 'TERM') AND sname
 
 SELECT * FROM page_relation WHERE tid IN ARRAY_OF_BASE_PAGE_IDS_FROM_ITERATION;
 </pre>
->>>>>>> Implementation of no5

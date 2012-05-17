@@ -10,5 +10,6 @@ if (isset($_REQUEST['term'])) {
   $data['synonyms'] = $synoms;
   $data['total'] = count($synoms);
 }
+header('Content-type: application/json');
 echo json_encode($data);
 die();

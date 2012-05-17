@@ -127,8 +127,10 @@ By visiting project/index.php you are asked to enter a term to search and if syn
 
 B. Ajax
 
-By visiting project/index.php?action=ajax&term=OUR TERM the search results are returned as a json encoded array {synonyms:[],total:NUM}.
-
+By visiting project/index.php?action=ajax&term=OUR TERM the search results are returned as a json encoded array 
+<pre>
+{synonyms:[],total:NUM}
+</pre>
 
 The search is done by to queries (if needed) and 1 iteration of the first query results:
 

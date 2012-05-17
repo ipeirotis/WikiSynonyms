@@ -52,9 +52,9 @@ gunzip page.sql.gz
 curl http://dumps.wikimedia.org/enwiki/latest/enwiki-latest-redirect.sql.gz -o redirect.sql.gz
 gunzip redirect.sql.gz
 
-mysql --host=ipeirotis.cehovbssb5oe.us-east-1.rds.amazonaws.com --user=ipeirotis --pass=uG27CYbuZrSwzLx8 ipeirotis < redirect.sql
+mysql --host=ipeirotis.cehovbssb5oe.us-east-1.rds.amazonaws.com --user=ipeirotis --pass=uG27CYbuZrSwzLx8 ipeirotis \< redirect.sql
 
-mysql --host=ipeirotis.cehovbssb5oe.us-east-1.rds.amazonaws.com --user=ipeirotis --pass=uG27CYbuZrSwzLx8 ipeirotis < page.sql
+mysql --host=ipeirotis.cehovbssb5oe.us-east-1.rds.amazonaws.com --user=ipeirotis --pass=uG27CYbuZrSwzLx8 ipeirotis \< page.sql
 </pre>
 
 These commands take approximately 2 hours to execute on Amazon RDS/MySQL (5 minutes for redirect.sql, two hours for page.sql), using the db.m2.4xlarge instance class. The tables are big, and you will need at least 10Gb free (preferably more, for peace of mind). Expect 6-7M entries in the redirect table and 27-30M entries for the page table.

@@ -37,6 +37,7 @@ class Application
     foreach ($data as $d) {
       if ($d['stitle'] == $key) {
         $new_bpages[] = $d['tid'];
+        $synoms[] = str_replace('_', ' ', $d['ttitle']);
       } else {
         $synoms[] = str_replace('_', ' ', $d['stitle']);
       }
@@ -48,6 +49,7 @@ class Application
 
       while ($row2 = mysql_fetch_assoc($result2)) {
         $synoms[] = str_replace('_', ' ', $row2['stitle']);
+        $synoms[] = str_replace('_', ' ', $row2['ttitle']);
       }
       self::doClose();
     }

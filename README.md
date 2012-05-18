@@ -61,7 +61,8 @@ These commands take approximately 2 hours to execute on Amazon RDS/MySQL (5 minu
 
 4, After you have a db you create the table described in No 4:
 
-<pre>CREATE TABLE page_relation (
+<pre>
+CREATE TABLE page_relation (
   sid int unsigned NOT NULL default 0,
   tid int unsigned NOT NULL default 0,
   snamespace int NOT NULL,
@@ -69,7 +70,10 @@ These commands take approximately 2 hours to execute on Amazon RDS/MySQL (5 minu
   stitle varchar(255) binary NOT NULL,
   ttitle varchar(255) binary NOT NULL,
   PRIMARY KEY (sid, tid)
-)</pre>
+)
+[[DEFAULT] CHARACTER SET utf8]
+[COLLATE utf8_general_ci]]
+</pre>
 
 and after that you can populate that
 

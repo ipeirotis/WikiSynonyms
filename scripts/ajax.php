@@ -7,7 +7,7 @@ $data = array(
 if (isset($_REQUEST['term'])) {
   $term = strip_tags(trim($_REQUEST['term']));
   $synoms = Application::getSynonyms($term);
-  $data['synonyms'] = $synoms;
+  $data['synonyms'] = array_values($synoms);
   $data['total'] = count($synoms);
 }
 header('Content-type: application/json');

@@ -56,7 +56,8 @@ class Application
     $data2 = array();
     if ($key) {
       
-      $key = str_replace(' ', '_', ucwords($key));
+      $key = ucwords($key);
+      $key = str_replace(' ', '_', $key);
 
       $query = sprintf("SELECT * FROM page_relation WHERE (stitle = '%s' OR ttitle = '%s') AND snamespace = 0 AND tnamespace = 0", $key, $key);
       $result = mysql_query($query);

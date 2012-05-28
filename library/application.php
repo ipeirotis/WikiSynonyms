@@ -121,6 +121,14 @@ class Application
 
     } 
     
+    foreach ($synoms as $key => $synom) {
+      if ($synom['is_primary'] == 1) {
+        $synoms = self::moveValueByIndex($synoms, $key, 0);
+        break;
+      }
+    }
+
+
     return $synoms;
   }
 

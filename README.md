@@ -19,10 +19,10 @@ It is a 860Mb compressed file (~2.5Gb uncompressed)
 3. Create a MySQL database with these two tables.
 
 4. Using the redirect table, and the page table, we want a two column output that lists which page redirects to which. We need:
-	a. The page_id of the "from" page [from the "redirect" table]
-	b. The namespace and title of the "from" page [taken from the "page" table]
-	c. The namespace and title of the "to" page [taken from the "redirect" table]
-	d. The page_id of the "to" page (to which the page redirects) [taken from the "page" table]
+a. The page_id of the "from" page [from the "redirect" table]
+b. The namespace and title of the "from" page [taken from the "page" table]
+c. The namespace and title of the "to" page [taken from the "redirect" table]
+d. The page_id of the "to" page (to which the page redirects) [taken from the "page" table]
 
 5. Using the table created in Step 4, we want to have web service that:
 a. takes as input a term

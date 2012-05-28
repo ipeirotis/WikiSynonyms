@@ -72,7 +72,7 @@ CREATE TABLE page_relation (
   PRIMARY KEY (sid, tid)
 ) 
 DEFAULT CHARACTER SET = utf8
-COLLATE utf8_general_ci
+COLLATE = utf8_general_ci
 </pre>
 
 and after that you can populate that

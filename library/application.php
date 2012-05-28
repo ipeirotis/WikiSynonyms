@@ -15,14 +15,48 @@ class Application
   {
     mysql_close();
   }
+  static function moveValueByIndex( array $array, $from=null, $to=null )
+  {
+    if ( null === $from )
+    {
+      $from = count( $array ) - 1;
+    }
+
+    if ( !isset( $array[$from] ) )
+    {
+      throw new Exception( "Offset $from does not exist" );
+    }
+
+    if ( array_keys( $array ) != range( 0, count( $array ) - 1 ) )
+    {
+      throw new Exception( "Invalid array keys" );
+    }
+
+    $value = $array[$from];
+    unset( $array[$from] );
+
+    if ( null === $to )
+    {
+      array_push( $array, $value );
+    } else {
+      $tail = array_splice( $array, $to );
+      array_push( $array, $value );
+      $array = array_merge( $array, $tail );
+    }
+
+    return $array;
+  }
 
   static function getSynonyms($key = null)
   {
     self::doConnect();
+    $temp_synoms = array();
     $synoms = array();
     $data = array();
+    $data2 = array();
     if ($key) {
-      $key = str_replace(' ', '_', $key);
+      
+      $key = str_replace(' ', '_', ucwords($key));
 
       $query = sprintf("SELECT * FROM page_relation WHERE (stitle = '%s' OR ttitle = '%s') AND snamespace = 0 AND tnamespace = 0", $key, $key);
       $result = mysql_query($query);
@@ -37,9 +71,20 @@ class Application
     foreach ($data as $d) {
       if ($d['stitle'] == $key) {
         $new_bpages[] = $d['tid'];
-        $synoms[] = str_replace('_', ' ', $d['ttitle']);
-      } else {
-        $synoms[] = str_replace('_', ' ', $d['stitle']);
+      }
+      if (!in_array(str_replace('_', ' ', $d['stitle']), $temp_synoms)){
+        $temp_synoms[] = str_replace('_', ' ', $d['stitle']);
+        $synoms[] = array(
+          'term' => str_replace('_', ' ', $d['stitle']),
+          'is_primary' => 0,
+        );
+      }  
+      if (!in_array(str_replace('_', ' ', $d['ttitle']), $temp_synoms)){
+        $temp_synoms[] = str_replace('_', ' ', $d['ttitle']);
+        $synoms[] = array(
+          'term' => str_replace('_', ' ', $d['ttitle']),
+          'is_primary' => 1,
+        );
       }
     }
     if (!empty($new_bpages)) {
@@ -48,14 +93,35 @@ class Application
       $result2 = mysql_query($query2);
 
       while ($row2 = mysql_fetch_assoc($result2)) {
-        $synoms[] = str_replace('_', ' ', $row2['stitle']);
-        $synoms[] = str_replace('_', ' ', $row2['ttitle']);
+        $data2[] = $row2;
+        if (!in_array(str_replace('_', ' ', $row2['stitle']), $temp_synoms)){
+          $temp_synoms[] = str_replace('_', ' ', $row2['stitle']);
+          $synoms[] = array(
+            'term' => str_replace('_', ' ', $row2['stitle']),
+            'is_primary' => 0,
+          );
+        }  
+        if (!in_array(str_replace('_', ' ', $row2['ttitle']), $temp_synoms)){
+          $temp_synoms[] = str_replace('_', ' ', $row2['ttitle']);
+          $synoms[] = array(
+            'term' => str_replace('_', ' ', $row2['ttitle']),
+            'is_primary' => 1,
+          );
+        }
       }
       self::doClose();
     }
+    
+    if ((in_array($key, $data) || in_array($key, $data2)) && !in_array($key, $synoms)) {
+      array_unshift($synoms, array(
+          'term' => str_replace('_', ' ', $key),
+          'is_primary' => 1,
+        )
+      );
 
-
-    return array_unique($synoms);
+    } 
+    
+    return $synoms;
   }
 
 }

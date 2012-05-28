@@ -18,8 +18,8 @@
 <strong>{$total}</strong> synonym(s) has been found for term <strong>{$values.term}</strong>:<br/>
 <ol>
   {foreach $synonyms as $synonym}
-  <li>
-    {$synonym}
+  <li {if $synonym['is_primary'] }style="color:red;"{/if}>
+    {$synonym['term']}
   </li>
   {/foreach}
 </ol>

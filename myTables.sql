@@ -86,7 +86,9 @@ CREATE TABLE page_relation (
   stitle varchar(255) binary NOT NULL,
   ttitle varchar(255) binary NOT NULL,
   PRIMARY KEY (sid, tid)
-) CHARACTER SET utf8 COLLATE utf8_general_ci;
+)
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_general_ci;
 
 
 

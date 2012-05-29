@@ -56,10 +56,10 @@ class Application
     $data2 = array();
     if ($key) {
       
-      $key = ucwords($key);
+//      $key = ucwords($key);
       $key = str_replace(' ', '_', $key);
 
-      $query = sprintf("SELECT * FROM page_relation WHERE (stitle = '%s' OR ttitle = '%s') AND snamespace = 0 AND tnamespace = 0", $key, $key);
+      $query = sprintf("SELECT * FROM page_relation WHERE (stitle = '%s' OR ttitle = '%s') AND (snamespace = 0 OR snamespace = 14) AND (tnamespace = 0 OR tnamespace = 14)", $key, $key);
       $result = mysql_query($query);
 
       while ($row = mysql_fetch_assoc($result)) {
@@ -70,9 +70,7 @@ class Application
 
     $new_bpages = array();
     foreach ($data as $d) {
-      if ($d['stitle'] == $key) {
-        $new_bpages[] = $d['tid'];
-      }
+      $new_bpages[] = $d['tid'];
       if (!in_array(str_replace('_', ' ', $d['stitle']), $temp_synoms)){
         $temp_synoms[] = str_replace('_', ' ', $d['stitle']);
         $synoms[] = array(

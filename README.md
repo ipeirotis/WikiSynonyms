@@ -67,8 +67,8 @@ CREATE TABLE page_relation (
   tid int unsigned NOT NULL default 0,
   snamespace int NOT NULL,
   tnamespace int NOT NULL,
-  stitle varchar(255) binary NOT NULL,
-  ttitle varchar(255) binary NOT NULL,
+  stitle varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  ttitle varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (sid, tid)
 ) 
 DEFAULT CHARACTER SET = utf8
@@ -94,7 +94,7 @@ Since the queries will be executed mainly on that table, once you create the pag
 
 <pre>
 CREATE INDEX ix_stitle ON ipeirotis.page_relation (stitle)
-  
+
 CREATE INDEX ix_ttitle ON ipeirotis.page_relation (ttitle)
 
 CREATE INDEX ix_sid ON ipeirotis.page_relation (sid)

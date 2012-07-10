@@ -43,7 +43,7 @@ d. using the base page title, return as synonyms all the terms that redirect *to
 Build
 =====
 
-Steps 1-3:
+<b> Steps 1-3:</b>
 
 <pre>
 curl http://dumps.wikimedia.org/enwiki/latest/enwiki-latest-page.sql.gz -o page.sql.gz
@@ -59,7 +59,7 @@ mysql --host=... --user=... --pass=... ipeirotis &lt; page.sql
 
 These commands take approximately 2 hours to execute on Amazon RDS/MySQL (5 minutes for redirect.sql, two hours for page.sql), using the db.m2.4xlarge instance class. The tables are big, and you will need at least 10Gb free (preferably more, for peace of mind). Expect 6-7M entries in the redirect table and 27-30M entries for the page table.
 
-4, After you have a db you create the table described in No 4:
+<b>4,</b>  After you have a db you create the table described in No 4:
 
 <pre>
 CREATE TABLE page_relation (
@@ -122,7 +122,7 @@ FROM
 returns very few results, which are already fixed in the actual Wikipedia (so there seems to be an automatic process that fixes that part)
 
 
-5, For this part of the project we created a mini platform with 2 actions (search and ajax).
+<b>5,</b> For this part of the project we created a mini platform with 2 actions (search and ajax).
 Search action implements a graphical representation of the search results whereas Ajax performs as service an return a json encoded data set.
 
 A. Search
@@ -145,7 +145,7 @@ SELECT * FROM page_relation WHERE tid IN ARRAY_OF_BASE_PAGE_IDS_FROM_ITERATION;
 </pre>
 
 
-6. Enhancement: We added a feature to search disambiguation pages so we add extra synonyms when searching for a keyword.
+<b>6,</b> Enhancement: We added a feature to search disambiguation pages so we add extra synonyms when searching for a keyword.
 
 We use 1 query to determine if a page is a disambiguous one and if it is an extra one to fetch those page links.
 

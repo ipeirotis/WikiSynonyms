@@ -9,9 +9,11 @@ if (isset($_REQUEST['term'])) {
   $synoms = Application::getSynonyms($term);
   $data['synonyms'] = array_values($synoms['synoms']);
   $data['disambiguations'] = $synoms['disambiguations'];
-  $data['total'] = count($synoms['synoms'])+count($synoms['disambiguations']);
-  foreach ($synoms['disambiguations'] as $disambiguation) {
-    $data['total'] = $data['total'] + count($disambiguation);
+  $data['total'] = count($synoms['synoms']) + count($synoms['disambiguations']);
+  if (count($synoms['disambiguations'])) {
+    foreach ($synoms['disambiguations'] as $disambiguation) {
+      $data['total'] = $data['total'] + count($disambiguation);
+    }
   }
 }
 header('Content-type: application/json');

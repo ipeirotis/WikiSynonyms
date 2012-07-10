@@ -103,7 +103,47 @@ class Application
     }
     return $out;
   }
+  
+  static function checkDisambiguations($keys = array())
+  {
+    $out = 0;
+    if (!$keys || empty($keys)) {
+      return;
+    }
+    foreach ($keys as $key => $value){
+      $keys[$key] =  (string) str_replace(' ', '_', $value);
+    }
+//    die($key);
+    $data = array();
+    
+    self::doConnect();
+    $k = implode("', '", $keys);
+    $query = "SELECT page.page_title as page, GROUP_CONCAT(categorylinks.cl_to) as categories FROM page JOIN categorylinks ON categorylinks.cl_from = page.page_id WHERE page.page_namespace = 0 AND page.page_title IN ('" . $k . "') GROUP BY page.page_title";
+    
+//    die($query);
+    $results = mysql_query($query);
 
+    while ($row = mysql_fetch_assoc($results)) {
+      $data[$row['page']] = explode(',', $row['categories']);
+    }
+    
+    self::doClose();
+   
+    foreach ($data as $d => $categories) {
+      if (in_array('Unprintworthy_redirects', $categories)) {
+        continue;
+      } 
+      if (!in_array('Disambiguation_pages', $categories)) {
+        unset($data[$d]);
+      } 
+    }
+//    if (!empty($data)) {
+//      var_dump($data);
+//      die();
+//    }
+    return $data;
+  }
+  
   static function getSynonyms($key = null)
   {
     self::doConnect();
@@ -186,21 +226,34 @@ class Application
 //        )
 //      );
 //    }
+    $disambiguations_check = array();
     $disambiguations = array();
     foreach ($synoms as $key => $synom) {
-      $r = self::checkDisambiguation($synom['term']);
-      if ($r == 1) {
-        $synoms[$key]['is_primary'] = 2;
-        $newSynoms = self::getDisambiguationLinks($synoms[$key]['id']);
-        $disambiguations[$synom['term']] = $newSynoms;
-        unset($synoms[$key]);
-      }
-      if ($r == 2) {
-        unset($synoms[$key]);
-      }
-//      if ($synom['is_primary'] == 1) {
-//        $synoms = self::moveValueByIndex($synoms, $key, 0);
+      $disambiguations_check[] = $synom['term'];
+//      $r = self::checkDisambiguation($synom['term']);
+//      if ($r == 1) {
+//        $synoms[$key]['is_primary'] = 2;
+//        $newSynoms = self::getDisambiguationLinks($synoms[$key]['id']);
+//        $disambiguations[$synom['term']] = $newSynoms;
+//        unset($synoms[$key]);
 //      }
+//      if ($r == 2) {
+//        unset($synoms[$key]);
+//      }
+      if ($synom['is_primary'] == 1) {
+        $synoms = self::moveValueByIndex($synoms, $key, 0);
+      }
+    }
+    $disambigs = self::checkDisambiguations($disambiguations_check);
+    
+    foreach ($synoms as $key => $synom) {
+      if(array_key_exists(str_replace(' ', '_', $synom['term']), $disambigs)) {
+        $newSynoms = self::getDisambiguationLinks($synoms[$key]['id']);
+        if($newSynoms && !empty($newSynoms)){
+          $disambiguations[$synom['term']] = $newSynoms;
+        }
+        unset($synoms[$key]);
+      }
     }
     $out['synoms'] = $synoms;
     if (!empty($disambiguations)) {

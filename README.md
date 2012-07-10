@@ -171,4 +171,14 @@ we now get a json encoded array result like this:
 {synonyms:[], disambiguation:[], total:NUM}
 </pre>
 
-<b>TODO: Enhance queries on 6 for faster results.</b>
+<STRIKE><b>TODO: Enhance queries on 6 for faster results.</b></STRIKE>
+
+NEW!!! determine if disambiguation:
+----------------------------
+<pre>
+SELECT page.page_title as page, GROUP_CONCAT(categorylinks.cl_to) as categories 
+FROM page 
+JOIN categorylinks 
+ON categorylinks.cl_from = page.page_id 
+WHERE page.page_namespace = 0 AND page.page_title IN --ARRAY_OF_PAGES-- GROUP BY page.page_title;
+</pre>

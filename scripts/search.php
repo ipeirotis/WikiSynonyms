@@ -16,9 +16,11 @@ if ($_POST['submit']) {
     $smarty->assign('errors', $errors);
   } else {
     $synoms = Application::getSynonyms($term);
-    $total = count($synoms['synoms'])+count($synoms['disambiguations']);
-    foreach ($synoms['disambiguations'] as $disambiguation) {
-      $total = $total + count($disambiguation);
+    $total = count($synoms['synoms']) + count($synoms['disambiguations']);
+    if (count($synoms['disambiguations'])) {
+      foreach ($synoms['disambiguations'] as $disambiguation) {
+        $total = $total + count($disambiguation);
+      }
     }
     $smarty->assign('synonyms', $synoms['synoms']);
     $smarty->assign('disambiguations', $synoms['disambiguations']);

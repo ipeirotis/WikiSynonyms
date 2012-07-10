@@ -143,3 +143,30 @@ SELECT * FROM page_relation WHERE (stitle = 'TERM' OR ttitle = 'TERM') AND sname
 
 SELECT * FROM page_relation WHERE tid IN ARRAY_OF_BASE_PAGE_IDS_FROM_ITERATION;
 </pre>
+
+
+6. Enhancement: We added a feature to search disambiguation pages so we add extra synonyms when searching for a keyword.
+
+We use 1 query to determine if a page is a disambiguous one and if it is an extra one to fetch those page links.
+
+Determine if disambiguation:
+----------------------------
+<pre>
+SELECT categorylinks.cl_to 
+FROM page 
+JOIN categorylinks 
+ON categorylinks.cl_from = page.page_id 
+WHERE page.page_namespace = 0 AND page.page_title = 'OUR_PAGE_TITLE';
+</pre>
+
+Fetch disambiguation page links:
+--------------------------------
+<pre>
+SELECT * FROM pagelinks WHERE pl_namespace = 0 AND  pl_from = 'DISAMBIGUATION_PAGE_ID';
+</pre>
+
+thus we have a change in our service (ajax)
+we now get a json encoded array result like this:
+<pre>
+{synonyms:[], disambiguation:[], total:NUM}
+</pre>

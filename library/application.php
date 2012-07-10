@@ -43,23 +43,23 @@ class Application
 
     return $array;
   }
-  
+
   static function getDisambiguationLinks($id = null)
   {
     if (!$id) {
       return null;
     }
     self::doConnect();
-    
+
     $query = "SELECT * FROM pagelinks WHERE pl_namespace = 0 AND  pl_from = '" . $id . "'";
 
     $result = mysql_query($query);
-    
+
     while ($row = mysql_fetch_assoc($result)) {
       $data[] = str_replace('_', ' ', $row['pl_title']);
     }
     self::doClose();
-    
+
     if (!empty($data)) {
       return $data;
     }
@@ -75,9 +75,9 @@ class Application
     $key = str_replace(' ', '_', $key);
 //    die($key);
     $data = array();
-    
+
     self::doConnect();
-    
+
     $query = "SELECT categorylinks.cl_to FROM page JOIN categorylinks ON categorylinks.cl_from = page.page_id WHERE page.page_namespace = 0 AND page.page_title = '" . $key . "'";
 
     $result = mysql_query($query);
@@ -85,7 +85,7 @@ class Application
     while ($row = mysql_fetch_assoc($result)) {
       $data[] = $row['cl_to'];
     }
-    
+
     self::doClose();
 //    if (!empty($data)) {
 //      echo $key;
@@ -96,46 +96,47 @@ class Application
       if ($category == 'Disambiguation_pages') {
         $out = 1;
       }
-      
+
       if ($category == 'Unprintworthy_redirects') {
         $out = 2;
       }
     }
     return $out;
   }
-  
+
   static function checkDisambiguations($keys = array())
   {
     $out = 0;
     if (!$keys || empty($keys)) {
       return;
     }
-    foreach ($keys as $key => $value){
-      $keys[$key] =  (string) str_replace(' ', '_', $value);
+    foreach ($keys as $key => $value) {
+      $keys[$key] = (string) str_replace(' ', '_', $value);
     }
 //    die($key);
     $data = array();
-    
+
     self::doConnect();
     $k = implode("', '", $keys);
     $query = "SELECT page.page_title as page, GROUP_CONCAT(categorylinks.cl_to) as categories FROM page JOIN categorylinks ON categorylinks.cl_from = page.page_id WHERE page.page_namespace = 0 AND page.page_title IN ('" . $k . "') GROUP BY page.page_title";
-    
+
 //    die($query);
     $results = mysql_query($query);
-
-    while ($row = mysql_fetch_assoc($results)) {
-      $data[$row['page']] = explode(',', $row['categories']);
+    if ($results) {
+      while ($row = mysql_fetch_assoc($results)) {
+        $data[$row['page']] = explode(',', $row['categories']);
+      }
     }
-    
+
     self::doClose();
-   
+
     foreach ($data as $d => $categories) {
       if (in_array('Unprintworthy_redirects', $categories)) {
         continue;
-      } 
+      }
       if (!in_array('Disambiguation_pages', $categories)) {
         unset($data[$d]);
-      } 
+      }
     }
 //    if (!empty($data)) {
 //      var_dump($data);
@@ -143,7 +144,7 @@ class Application
 //    }
     return $data;
   }
-  
+
   static function getSynonyms($key = null)
   {
     self::doConnect();
@@ -245,14 +246,21 @@ class Application
       }
     }
     $disambigs = self::checkDisambiguations($disambiguations_check);
-    
-    foreach ($synoms as $key => $synom) {
-      if(array_key_exists(str_replace(' ', '_', $synom['term']), $disambigs)) {
-        $newSynoms = self::getDisambiguationLinks($synoms[$key]['id']);
-        if($newSynoms && !empty($newSynoms)){
-          $disambiguations[$synom['term']] = $newSynoms;
+    if($disambigs && !empty($disambigs)){
+      foreach ($synoms as $key => $synom) {
+        if (array_key_exists(str_replace(' ', '_', $synom['term']), $disambigs)) {
+          if (in_array('Unprintworthy_redirects', $disambigs[str_replace(' ', '_', $synom['term'])])) {
+            unset($synoms[$key]);
+            continue;
+          }
+          if (!in_array('Disambiguation_pages', $disambigs[str_replace(' ', '_', $synom['term'])])) {
+            $newSynoms = self::getDisambiguationLinks($synoms[$key]['id']);
+            if ($newSynoms && !empty($newSynoms)) {
+              $disambiguations[$synom['term']] = $newSynoms;
+            }
+            unset($synoms[$key]);
+          }
         }
-        unset($synoms[$key]);
       }
     }
     $out['synoms'] = $synoms;

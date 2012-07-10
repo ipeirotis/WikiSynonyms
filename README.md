@@ -170,3 +170,5 @@ we now get a json encoded array result like this:
 <pre>
 {synonyms:[], disambiguation:[], total:NUM}
 </pre>
+
+<b>TODO: Enhance queries on 6 for faster results.</b>

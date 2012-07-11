@@ -251,9 +251,8 @@ class Application
         if (array_key_exists(str_replace(' ', '_', $synom['term']), $disambigs)) {
           if (in_array('Unprintworthy_redirects', $disambigs[str_replace(' ', '_', $synom['term'])])) {
             unset($synoms[$key]);
-            continue;
           }
-          if (!in_array('Disambiguation_pages', $disambigs[str_replace(' ', '_', $synom['term'])])) {
+          if (in_array('Disambiguation_pages', $disambigs[str_replace(' ', '_', $synom['term'])])) {
             $newSynoms = self::getDisambiguationLinks($synoms[$key]['id']);
             if ($newSynoms && !empty($newSynoms)) {
               $disambiguations[$synom['term']] = $newSynoms;

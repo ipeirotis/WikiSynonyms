@@ -125,6 +125,7 @@ returns very few results, which are already fixed in the actual Wikipedia (so th
 
 <b>5,</b> For this part of the project we created a mini platform with 2 actions (search and ajax).
 Search action implements a graphical representation of the search results whereas Ajax performs as service an return a json encoded data set.
+-------------------------------------------------------------------------------------------------------------------------------
 
 A. Search
 

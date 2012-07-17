@@ -44,6 +44,7 @@ Build
 =====
 
 <b> Steps 1-3:</b>
+-------------------------------------------------------------------------------------------------------------------------------
 
 <pre>
 curl http://dumps.wikimedia.org/enwiki/latest/enwiki-latest-page.sql.gz -o page.sql.gz
@@ -60,6 +61,7 @@ mysql --host=... --user=... --pass=... ipeirotis &lt; page.sql
 These commands take approximately 2 hours to execute on Amazon RDS/MySQL (5 minutes for redirect.sql, two hours for page.sql), using the db.m2.4xlarge instance class. The tables are big, and you will need at least 10Gb free (preferably more, for peace of mind). Expect 6-7M entries in the redirect table and 27-30M entries for the page table.
 
 <b>4,</b>  After you have a db you create the table described in No 4:
+-------------------------------------------------------------------------------------------------------------------------------
 
 <pre>
 CREATE TABLE page_relation (
@@ -102,8 +104,7 @@ CREATE INDEX ix_sid ON ipeirotis.page_relation (sid)
 CREATE INDEX ix_tid ON ipeirotis.page_relation (tid)
 </pre>
 
-Note
-====
+<b>Note!!!</b>
 
 We do not need to worry about chains of redirects. The query
 
@@ -146,11 +147,11 @@ SELECT * FROM page_relation WHERE tid IN ARRAY_OF_BASE_PAGE_IDS_FROM_ITERATION;
 
 
 <b>6,</b> Enhancement: We added a feature to search disambiguation pages so we add extra synonyms when searching for a keyword.
-
+-------------------------------------------------------------------------------------------------------------------------------
 We use 1 query to determine if a page is a disambiguous one and if it is an extra one to fetch those page links.
 
-Determine if disambiguation:
-----------------------------
+<b>Determine if disambiguation:</b>
+
 <pre>
 SELECT categorylinks.cl_to 
 FROM page 
@@ -159,8 +160,8 @@ ON categorylinks.cl_from = page.page_id
 WHERE page.page_namespace = 0 AND page.page_title = 'OUR_PAGE_TITLE';
 </pre>
 
-Fetch disambiguation page links:
---------------------------------
+<b>Fetch disambiguation page links:</b>
+
 <pre>
 SELECT * FROM pagelinks WHERE pl_namespace = 0 AND  pl_from = 'DISAMBIGUATION_PAGE_ID';
 </pre>
@@ -173,12 +174,18 @@ we now get a json encoded array result like this:
 
 ~~<b>TODO: Enhance queries on 6 for faster results.</b>~~
 
-NEW!!! determine if disambiguation:
-----------------------------
+<b>NEW!!! determine if disambiguation:</b>
+
 <pre>
 SELECT page.page_title as page, GROUP_CONCAT(categorylinks.cl_to) as categories 
 FROM page 
 JOIN categorylinks 
 ON categorylinks.cl_from = page.page_id 
 WHERE page.page_namespace = 0 AND page.page_title IN --ARRAY_OF_PAGES-- GROUP BY page.page_title;
+</pre>
+
+<b>6,</b> Enhancement: Integrating with oDesk skills. (return extra ones that matches our query from the odesk skill table)
+-------------------------------------------------------------------------------------------------------------------------------
+<pre>
+SELECT * FROM odesk_skills WHERE skill IN --ARRAY_OF_SYNONYMS_RETURNED_IN_STEP_5--
 </pre>

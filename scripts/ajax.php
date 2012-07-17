@@ -62,7 +62,8 @@ if (isset($_REQUEST['term'])) {
   $synoms = Application::getSynonyms($term);
   $data['synonyms'] = array_values($synoms['synoms']);
   $data['disambiguations'] = $synoms['disambiguations'];
-  $data['total'] = count($synoms['synoms']) + count($synoms['disambiguations']);
+  $data['odesk'] = $synoms['odesk'];
+  $data['total'] = count($synoms['synoms']) + count($synoms['disambiguations']) + count($synoms['odesk']);
   if (count($synoms['disambiguations'])) {
     foreach ($synoms['disambiguations'] as $disambiguation) {
       $data['total'] = $data['total'] + count($disambiguation);

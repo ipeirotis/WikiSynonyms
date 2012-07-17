@@ -34,4 +34,19 @@
   {/foreach}
 </ol>
 {/foreach}
+
+{if $odesk}
+<span>oDesk Skills</span>
+<ol>
+  {foreach $odesk as $skill}
+  <li>
+    {if $skill['external_link']}
+      <a href="{$skill['external_link']}" target="_blank">{$skill['skill']} ({$skill['pretty_name']})</a>
+    {else}
+      {$skill['skill']} ({$skill['pretty_name']})
+    {/if}
+  </li>
+  {/foreach}
+</ol>
+{/if}
 {/if}

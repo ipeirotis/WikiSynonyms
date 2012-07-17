@@ -44,6 +44,55 @@ class Application
     return $array;
   }
 
+  static function checkOdeskSkillsByTerm($term = null)
+  {
+    if (!$term) {
+      return null;
+    }
+
+    $data = array();
+
+    self::doConnect();
+
+    $query = sprintf("SELECT * FROM odesk_skills WHERE skill = ('%s')", str_replace('_', '-', $term));
+
+    $result = mysql_query($query);
+
+    if ($result) {
+      while ($row = mysql_fetch_assoc($result)) {
+        $data[] = $row;
+      }
+    }
+
+    self::doClose();
+    
+    return $data;
+  }
+  static function checkOdeskSkillsByTerms($terms = array())
+  {
+    if (!$terms || empty($terms)) {
+      return null;
+    }
+
+    $data = array();
+
+    self::doConnect();
+
+    $query = sprintf("SELECT * FROM odesk_skills WHERE skill IN ('%s')", str_replace('_', '-', implode("','", $terms)));
+
+    $result = mysql_query($query);
+
+    if ($result) {
+      while ($row = mysql_fetch_assoc($result)) {
+        $data[] = $row;
+      }
+    }
+
+    self::doClose();
+    
+    return $data;
+  }
+
   static function getDisambiguationLinks($id = null)
   {
     if (!$id) {
@@ -81,7 +130,7 @@ class Application
     $query = "SELECT categorylinks.cl_to FROM page JOIN categorylinks ON categorylinks.cl_from = page.page_id WHERE page.page_namespace = 0 AND page.page_title = '" . $key . "'";
 
     $result = mysql_query($query);
-    
+
     while ($row = mysql_fetch_assoc($result)) {
       $data[] = $row['cl_to'];
     }
@@ -218,19 +267,20 @@ class Application
       self::doClose();
     }
 
-//    if ((in_array($key, $data) || in_array($key, $data2)) && !in_array($key, $synoms)) {
-//      array_unshift($synoms, array(
-//        'id' => null,
-//        'term' => str_replace('_', ' ', $key),
-//        'ns' => -100,
-//        'is_primary' => 1,
-//        )
-//      );
-//    }
-    $disambiguations_check = array();
+    if ((in_array($key, $data) || in_array($key, $data2)) && !in_array($key, $synoms)) {
+      array_unshift($synoms, array(
+        'id' => null,
+        'term' => str_replace('_', ' ', $key),
+        'ns' => -100,
+        'is_primary' => 1,
+        )
+      );
+    }
+    $_check = array();
     $disambiguations = array();
+    $odesk = array();
     foreach ($synoms as $key => $synom) {
-      $disambiguations_check[] = $synom['term'];
+      $_check[] = $synom['term'];
 //      $r = self::checkDisambiguation($synom['term']);
 //      if ($r == 1) {
 //        $synoms[$key]['is_primary'] = 2;
@@ -245,8 +295,8 @@ class Application
         $synoms = self::moveValueByIndex($synoms, $key, 0);
       }
     }
-    $disambigs = self::checkDisambiguations($disambiguations_check);
-    if($disambigs && !empty($disambigs)){
+    $disambigs = self::checkDisambiguations($_check);
+    if ($disambigs && !empty($disambigs)) {
       foreach ($synoms as $key => $synom) {
         if (array_key_exists(str_replace(' ', '_', $synom['term']), $disambigs)) {
           if (in_array('Unprintworthy_redirects', $disambigs[str_replace(' ', '_', $synom['term'])])) {
@@ -262,9 +312,14 @@ class Application
         }
       }
     }
+    $odesk = self::checkOdeskSkillsByTerms($_check);
+    
     $out['synoms'] = $synoms;
     if (!empty($disambiguations)) {
       $out['disambiguations'] = $disambiguations;
+    }
+    if (!empty($odesk)) {
+      $out['odesk'] = $odesk;
     }
     return $out;
   }

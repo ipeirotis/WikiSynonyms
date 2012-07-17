@@ -199,8 +199,34 @@ ON categorylinks.cl_from = page.page_id
 WHERE page.page_namespace = 0 AND page.page_title IN --ARRAY_OF_PAGES-- GROUP BY page.page_title;
 </pre>
 
-Step 7: Enhancement: Integrating with oDesk skills. (return extra ones that matches our query from the odesk skill table)
+Step 7: Enhancement: Integrating with oDesk skills. 
 -------------------------------------------------------------------------------------------------------------------------------
+(Issue #6 implementation)
+
+Create a table with the list of oDesk skills:
+<pre>
+CREATE TABLE /*_*/odesk_skills (
+  skill varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL PRIMARY KEY,
+  pretty_name varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  external_link varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  description TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  wikipedia_page_id int NULL DEFAULT NULL,
+  freebase_machine_id varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL
+)
+DEFAULT CHARSET=utf8
+COLLATE = utf8_general_ci;
+
+CREATE INDEX /*i*/os_pretty_name ON /*_*/odesk_skills (pretty_name);
+</pre>
+
+After that we search for skills in odesk skills table that match our synonyms and return them as array:
+
 <pre>
 SELECT * FROM odesk_skills WHERE skill IN --ARRAY_OF_SYNONYMS_RETURNED_IN_STEP_5--
+</pre>
+
+return in ajax (JSON) is now:
+
+<pre>
+{synonyms:[], disambiguation:[], odesk:[], total:NUM}
 </pre>

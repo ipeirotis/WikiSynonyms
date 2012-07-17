@@ -2,7 +2,7 @@ wikiSyno
 ========
 
 Build a synonym table from Wikipedia
-
+------------------------------------
 
 1. Download a Wikipedia dump using the instructions at http://en.wikipedia.org/wiki/Wikipedia:Database_download and store it in a MySQL database.
 
@@ -38,7 +38,20 @@ d. using the base page title, return as synonyms all the terms that redirect *to
 
 [Optional component: Restrict the entries in the page table to be only entries for which we know to be an "oDesk skill" and we have a Wikipedia page. We will provide you with the dictionary of skills that we use within oDesk] 
 
+Expand the Wikipedia Synonyms service as follows:
+-------------------------------------------------
 
+* Check for disambiguation pages, using the "category" table in Wikipedia, and marking as disambiguation pages all pages within http://en.wikipedia.org/wiki/Category:Disambiguation_pages You will need to fetch a the extra necessary tables from http://dumps.wikimedia.org/enwiki/latest/
+
+* Import an "oDesk Skill" table and allow people to query and find synonyms for oDesk Skills (same service as the usual one, but restricted only to oDesk skills for querying). We will provide you with the dictionary of skills that we use within oDesk.
+
+* Examine how we can best use the StackExchange API, to get synonyms and related tags. For example, for Java, we get back the following synonyms: https://api.stackexchange.com/2.0/tags/%7Bjava%7D/synonyms?order=desc&sort=creation&site=stackoverflow Documentation at https://api.stackexchange.com/docs/synonyms-by-tags
+
+* Use Google Cloud SQL to store the tables and use Google App Engine to create the service.
+
+* Check in Google App Engine whether it is possible to automate the downloading of the gzipped SQL files from Wikipedia, and automate their execution every month or so.
+
+* Create a short public documentation of the service, using GitHub pages for hosting
 
 Build
 =====
@@ -60,7 +73,7 @@ mysql --host=... --user=... --pass=... ipeirotis &lt; page.sql
 
 These commands take approximately 2 hours to execute on Amazon RDS/MySQL (5 minutes for redirect.sql, two hours for page.sql), using the db.m2.4xlarge instance class. The tables are big, and you will need at least 10Gb free (preferably more, for peace of mind). Expect 6-7M entries in the redirect table and 27-30M entries for the page table.
 
-<b>4,</b>  After you have a db you create the table described in No 4:
+Step 4: After you have a db you create the table described in No 4:
 -------------------------------------------------------------------------------------------------------------------------------
 
 <pre>
@@ -123,7 +136,7 @@ FROM
 returns very few results, which are already fixed in the actual Wikipedia (so there seems to be an automatic process that fixes that part)
 
 
-<b>5,</b> For this part of the project we created a mini platform with 2 actions (search and ajax).
+Step 5: For this part of the project we created a mini platform with 2 actions (search and ajax).
 -------------------------------------------------------------------------------------------------------------------------------
 
 Search action implements a graphical representation of the search results whereas Ajax performs as service an return a json encoded data set.
@@ -148,7 +161,7 @@ SELECT * FROM page_relation WHERE tid IN ARRAY_OF_BASE_PAGE_IDS_FROM_ITERATION;
 </pre>
 
 
-<b>6,</b> Enhancement: We added a feature to search disambiguation pages so we add extra synonyms when searching for a keyword.
+Step 6: Enhancement: We added a feature to search disambiguation pages so we add extra synonyms when searching for a keyword.
 -------------------------------------------------------------------------------------------------------------------------------
 We use 1 query to determine if a page is a disambiguous one and if it is an extra one to fetch those page links.
 
@@ -186,7 +199,7 @@ ON categorylinks.cl_from = page.page_id
 WHERE page.page_namespace = 0 AND page.page_title IN --ARRAY_OF_PAGES-- GROUP BY page.page_title;
 </pre>
 
-<b>6,</b> Enhancement: Integrating with oDesk skills. (return extra ones that matches our query from the odesk skill table)
+Step 7: Enhancement: Integrating with oDesk skills. (return extra ones that matches our query from the odesk skill table)
 -------------------------------------------------------------------------------------------------------------------------------
 <pre>
 SELECT * FROM odesk_skills WHERE skill IN --ARRAY_OF_SYNONYMS_RETURNED_IN_STEP_5--

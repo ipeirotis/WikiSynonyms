@@ -63,12 +63,27 @@ Build
 curl http://dumps.wikimedia.org/enwiki/latest/enwiki-latest-page.sql.gz -o page.sql.gz
 gunzip page.sql.gz
 
+curl http://dumps.wikimedia.org/enwiki/latest/enwiki-latest-category.sql.gz -o category.sql.gz
+gunzip category.sql.gz
+
+curl http://dumps.wikimedia.org/enwiki/latest/enwiki-latest-pagelinks.sql.gz -o pagelinks.sql.gz
+gunzip pagelinks.sql.gz
+
+curl http://dumps.wikimedia.org/enwiki/latest/enwiki-latest-categorylinks.sql.gz -o categorylinks.sql.gz
+gunzip categorylinks.sql.gz
+
 curl http://dumps.wikimedia.org/enwiki/latest/enwiki-latest-redirect.sql.gz -o redirect.sql.gz
 gunzip redirect.sql.gz
 
-mysql --host=... --user=... --pass=... ipeirotis &lt; redirect.sql
-
 mysql --host=... --user=... --pass=... ipeirotis &lt; page.sql
+
+mysql --host=... --user=... --pass=... ipeirotis &lt; pagelinks.sql
+
+mysql --host=... --user=... --pass=... ipeirotis &lt; category.sql
+
+mysql --host=... --user=... --pass=... ipeirotis &lt; categorylinks.sql
+
+mysql --host=... --user=... --pass=... ipeirotis &lt; redirect.sql
 </pre>
 
 These commands take approximately 2 hours to execute on Amazon RDS/MySQL (5 minutes for redirect.sql, two hours for page.sql), using the db.m2.4xlarge instance class. The tables are big, and you will need at least 10Gb free (preferably more, for peace of mind). Expect 6-7M entries in the redirect table and 27-30M entries for the page table.
@@ -230,3 +245,21 @@ return in ajax (JSON) is now:
 <pre>
 {synonyms:[], disambiguation:[], odesk:[], total:NUM}
 </pre>
+
+Step 8: Issues with capitalization and matching. (Issue #12)
+-------------------------------------------------------------------------------------------------------------------------------
+
+Using the query below we address a bit of the capitalization and matching issue:
+<pre>
+SELECT * FROM page_relation WHERE (CONVERT(stitle USING latin1) COLLATE latin1_general_cs 'TERM' OR CONVERT(ttitle USING latin1) COLLATE latin1_general_cs = 'TERM') AND snamespace = 0 AND tnamespace = 0;
+</pre>
+We execute the query first and then we execute the case insensitive one if no results from the first one.
+Though the query takes too long to be executed due to the on-the-fly conversion of the collation, so that should be a <b>temporary solution</b>.
+
+<b>TODO: The best solution would be in step 4 to create a double table where we use case sensitive collation to perform the query without conversion on-the-fly.</b>
+
+
+Installation:
+=============
+
+@@Todo!!!

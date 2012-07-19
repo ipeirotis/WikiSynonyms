@@ -193,7 +193,7 @@ class Application
 //    }
     return $data;
   }
-
+  
   static function getSynonyms($key = null)
   {
     self::doConnect();
@@ -205,11 +205,14 @@ class Application
 
 //      $key = ucwords($key);
       $key = str_replace(' ', '_', $key);
-
 //      $query = sprintf("SELECT * FROM page_relation WHERE (stitle = '%s' OR ttitle = '%s')  ", $key, $key);
-      $query = sprintf("SELECT * FROM page_relation WHERE (stitle = '%s' OR ttitle = '%s') AND (snamespace = 0) AND (tnamespace = 0 OR tnamespace = 14)  ", $key, $key);
-      $result = mysql_query($query);
-
+      $query_cs = sprintf("SELECT * FROM page_relation WHERE (CONVERT(stitle USING latin1) COLLATE latin1_general_cs = '%s' OR CONVERT(ttitle USING latin1) COLLATE latin1_general_cs = '%s') AND (snamespace = 0) AND (tnamespace = 0 OR tnamespace = 14)  ", $key, $key);
+      $query_ci = sprintf("SELECT * FROM page_relation WHERE (stitle = '%s' OR ttitle = '%s') AND (snamespace = 0) AND (tnamespace = 0 OR tnamespace = 14)  ", $key, $key);
+      $result = mysql_query($query_cs);
+      
+      if (mysql_num_rows($result) < 1){
+        $result = mysql_query($query_ci);
+      }
       while ($row = mysql_fetch_assoc($result)) {
         $data[] = $row;
       }

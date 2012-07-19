@@ -5,8 +5,8 @@ if ($_POST['submit']) {
   $errors = array();
   if (!$term) {
     $errors['term'] = 'Term can not be empty!';
-  } else if (strlen($term) < 2) {
-    $errors['term'] = 'Term has to be 2 characters and more!';
+  } else if (strlen($term) < 1) {
+    $errors['term'] = 'Term has to be 1 characters and more!';
   } else if (strlen($term) > 255) {
     $errors['term'] = 'Term can not be more than 255 characters!';
   }

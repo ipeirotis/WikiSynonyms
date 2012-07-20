@@ -339,7 +339,7 @@ CREATE INDEX ix_sid ON DB_NAME.page_relation (sid);
 CREATE INDEX ix_tid ON DB_NAME.page_relation (tid);
 </pre>
 
-B. Setup application
+B. Application setup 
 --------------------
 
 Rename /config/config_dist.php to /config/config.php

@@ -75,15 +75,15 @@ gunzip categorylinks.sql.gz
 curl http://dumps.wikimedia.org/enwiki/latest/enwiki-latest-redirect.sql.gz -o redirect.sql.gz
 gunzip redirect.sql.gz
 
-mysql --host=... --user=... --pass=... ipeirotis &lt; page.sql
+mysql --host=... --user=... --pass=... DB_NAME &lt; page.sql
 
-mysql --host=... --user=... --pass=... ipeirotis &lt; pagelinks.sql
+mysql --host=... --user=... --pass=... DB_NAME &lt; pagelinks.sql
 
-mysql --host=... --user=... --pass=... ipeirotis &lt; category.sql
+mysql --host=... --user=... --pass=... DB_NAME &lt; category.sql
 
-mysql --host=... --user=... --pass=... ipeirotis &lt; categorylinks.sql
+mysql --host=... --user=... --pass=... DB_NAME &lt; categorylinks.sql
 
-mysql --host=... --user=... --pass=... ipeirotis &lt; redirect.sql
+mysql --host=... --user=... --pass=... DB_NAME &lt; redirect.sql
 </pre>
 
 These commands take approximately 2 hours to execute on Amazon RDS/MySQL (5 minutes for redirect.sql, two hours for page.sql), using the db.m2.4xlarge instance class. The tables are big, and you will need at least 10Gb free (preferably more, for peace of mind). Expect 6-7M entries in the redirect table and 27-30M entries for the page table.
@@ -123,13 +123,13 @@ This query will need approximately an hour to execute and the table will have 6M
 Since the queries will be executed mainly on that table, once you create the page_relation table, you will want to create indexes on all attributes
 
 <pre>
-CREATE INDEX ix_stitle ON ipeirotis.page_relation (stitle)
+CREATE INDEX ix_stitle ON DB_NAME.page_relation (stitle)
 
-CREATE INDEX ix_ttitle ON ipeirotis.page_relation (ttitle)
+CREATE INDEX ix_ttitle ON DB_NAME.page_relation (ttitle)
 
-CREATE INDEX ix_sid ON ipeirotis.page_relation (sid)
+CREATE INDEX ix_sid ON DB_NAME.page_relation (sid)
   
-CREATE INDEX ix_tid ON ipeirotis.page_relation (tid)
+CREATE INDEX ix_tid ON DB_NAME.page_relation (tid)
 </pre>
 
 <b>Note!!!</b>
@@ -266,4 +266,100 @@ Though the query takes too long to be executed due to the on-the-fly conversion 
 Installation:
 =============
 
-@@Todo!!!
+A. Requirements
+---------------
+1. WEB server
+2. PHP
+3. MySQL
+
+B. DB setup
+-----------
+
+1. Create a DB
+2. Run /tables.sql to create schema and then /odesk_skills.sql to add odesk skills to the db.
+3. Fetch and import latest data from mediawiki. <b>(heavy process!!!)</b>
+
+<pre>
+curl http://dumps.wikimedia.org/enwiki/latest/enwiki-latest-page.sql.gz -o page.sql.gz
+gunzip page.sql.gz
+
+curl http://dumps.wikimedia.org/enwiki/latest/enwiki-latest-category.sql.gz -o category.sql.gz
+gunzip category.sql.gz
+
+curl http://dumps.wikimedia.org/enwiki/latest/enwiki-latest-pagelinks.sql.gz -o pagelinks.sql.gz
+gunzip pagelinks.sql.gz
+
+curl http://dumps.wikimedia.org/enwiki/latest/enwiki-latest-categorylinks.sql.gz -o categorylinks.sql.gz
+gunzip categorylinks.sql.gz
+
+curl http://dumps.wikimedia.org/enwiki/latest/enwiki-latest-redirect.sql.gz -o redirect.sql.gz
+gunzip redirect.sql.gz
+
+mysql --host=... --user=... --pass=... DB_NAME &lt; page.sql
+
+mysql --host=... --user=... --pass=... DB_NAME &lt; pagelinks.sql
+
+mysql --host=... --user=... --pass=... DB_NAME &lt; category.sql
+
+mysql --host=... --user=... --pass=... DB_NAME &lt; categorylinks.sql
+
+mysql --host=... --user=... --pass=... DB_NAME &lt; redirect.sql
+</pre>
+
+These commands take approximately 2 hours to execute on Amazon RDS/MySQL (5 minutes for redirect.sql, two hours for page.sql), using the db.m2.4xlarge instance class. The tables are big, and you will need at least 10Gb free (preferably more, for peace of mind). Expect 6-7M entries in the redirect table and 27-30M entries for the page table.
+
+4. Populate & setup intermediate table (page_relation) by running the queries bellow:
+
+<b>(heavy process!!!)</b>
+
+<pre>
+INSERT IGNORE INTO page_relation
+SELECT s.rd_from as sid, 
+      t.page_id as tid, 
+      p.page_namespace as snamespace,
+      t.page_namespace as tnamespace, 
+      p.page_title as stitle, 
+      t.page_title as ttitle 
+FROM redirect s 
+JOIN page p ON (s.rd_from = p.page_id)
+JOIN page t ON (s.rd_namespace = t.page_namespace AND s.rd_title = t.page_title);
+</pre>
+
+This query will need approximately an hour to execute and the table will have 6M-7M entries. 
+
+Since the queries will be executed mainly on that table, once you create the page_relation table, you will want to create indexes on all attributes
+
+<pre>
+CREATE INDEX ix_stitle ON DB_NAME.page_relation (stitle);
+
+CREATE INDEX ix_ttitle ON DB_NAME.page_relation (ttitle);
+
+CREATE INDEX ix_sid ON DB_NAME.page_relation (sid);
+  
+CREATE INDEX ix_tid ON DB_NAME.page_relation (tid);
+</pre>
+
+B. Setup application
+--------------------
+
+Rename /config/config_dist.php to /config/config.php
+Then edit the file and adjust parameters to your db connection.
+
+C. Running the Application
+--------------------------
+
+<b>GUI version:</b>
+Navigate to your HOST_ROOT/wikisyno/index.php?action=search OR HOST_ROOT/wikisyno/index.php (default action is search).
+There you can enter your query in the field and search for synonims.
+
+<b>API version:</b>
+Navigate to your HOST_ROOT/wikisyno/index.php?action=ajax&term=YOUR_QUERY
+This will return a JSON encoded response with the results from search.
+FORMAT:
+<pre>
+{synonyms:[], disambiguation:[], odesk:[], total:NUM}
+</pre>
+
+NOTE!!!: You can pass a parameter (for test and debug only) pretty_print=true in order to get a structured for of the JSON response for better view.
+eg: HOST_ROOT/wikisyno/index.php?pretty_print=true&action=ajax&term=YOUR_QUERY
+

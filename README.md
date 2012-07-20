@@ -276,7 +276,7 @@ B. DB setup
 -----------
 
 1. Create a DB
-2. Run /tables.sql to create schema and then /odesk_skills.sql to add odesk skills to the db.
+2. Run /Tables.sql to create schema and then /odesk_skills.sql to add odesk skills to the db.
 3. Fetch and import latest data from mediawiki. <b>(heavy process!!!)</b>
 
 <pre>

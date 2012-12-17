@@ -44,6 +44,73 @@ class Application
     return $array;
   }
 
+  static function getAllOdeskSkillsWithExternalLink()
+  {
+    $data = array();
+
+    self::doConnect();
+
+    $query = "SELECT * FROM odesk_skills WHERE external_link != ''";
+
+    $result = mysql_query($query);
+
+    if ($result) {
+      while ($row = mysql_fetch_assoc($result)) {
+        $data[] = $row;
+      }
+    }
+
+    self::doClose();
+
+    return $data;
+  }
+
+  static function getAllOdeskSkills()
+  {
+    $data = array();
+
+    self::doConnect();
+
+    $query = "SELECT * FROM odesk_skills WHERE 1";
+
+    $result = mysql_query($query);
+
+    if ($result) {
+      while ($row = mysql_fetch_assoc($result)) {
+        $data[] = $row;
+      }
+    }
+
+    self::doClose();
+
+    return $data;
+  }
+
+  static function getOdeskSkills($term = null)
+  {
+    if (!$term) {
+      return null;
+    }
+
+    $data = array();
+
+    self::doConnect();
+
+    $query = sprintf("SELECT * FROM odesk_skills WHERE skill = ('%s')", str_replace('_', '-', $term));
+
+    $result = mysql_query($query);
+
+    if ($result) {
+      while ($row = mysql_fetch_assoc($result)) {
+        $data[] = $row;
+      }
+    }
+
+    self::doClose();
+
+    return $data;
+  }
+
   static function checkOdeskSkillsByTerm($term = null)
   {
     if (!$term) {
@@ -65,9 +132,10 @@ class Application
     }
 
     self::doClose();
-    
+
     return $data;
   }
+
   static function checkOdeskSkillsByTerms($terms = array())
   {
     if (!$terms || empty($terms)) {
@@ -89,7 +157,7 @@ class Application
     }
 
     self::doClose();
-    
+
     return $data;
   }
 
@@ -193,7 +261,7 @@ class Application
 //    }
     return $data;
   }
-  
+
   static function getSynonyms($key = null)
   {
     self::doConnect();
@@ -208,11 +276,10 @@ class Application
 //      $query = sprintf("SELECT * FROM page_relation WHERE (stitle = '%s' OR ttitle = '%s')  ", $key, $key);
       $query_cs = sprintf("SELECT * FROM page_relation WHERE (CONVERT(stitle USING latin1) COLLATE latin1_general_cs = '%s' OR CONVERT(ttitle USING latin1) COLLATE latin1_general_cs = '%s') AND (snamespace = 0) AND (tnamespace = 0 OR tnamespace = 14)  ", $key, $key);
       $query_ci = sprintf("SELECT * FROM page_relation WHERE (stitle = '%s' OR ttitle = '%s') AND (snamespace = 0) AND (tnamespace = 0 OR tnamespace = 14)  ", $key, $key);
-      $result = mysql_query($query_cs);
-      
-      if (mysql_num_rows($result) < 1){
-        $result = mysql_query($query_ci);
-      }
+//      $result = mysql_query($query_cs);
+//      if (mysql_num_rows($result) < 1){
+      $result = mysql_query($query_ci);
+//      }
       while ($row = mysql_fetch_assoc($result)) {
         $data[] = $row;
       }
@@ -281,19 +348,18 @@ class Application
     }
     $_check = array();
     $disambiguations = array();
-    $odesk = array();
     foreach ($synoms as $key => $synom) {
       $_check[] = $synom['term'];
-//      $r = self::checkDisambiguation($synom['term']);
-//      if ($r == 1) {
-//        $synoms[$key]['is_primary'] = 2;
-//        $newSynoms = self::getDisambiguationLinks($synoms[$key]['id']);
-//        $disambiguations[$synom['term']] = $newSynoms;
-//        unset($synoms[$key]);
-//      }
-//      if ($r == 2) {
-//        unset($synoms[$key]);
-//      }
+      $r = self::checkDisambiguation($synom['term']);
+      if ($r == 1) {
+        $synoms[$key]['is_primary'] = 2;
+        $newSynoms = self::getDisambiguationLinks($synoms[$key]['id']);
+        $disambiguations[$synom['term']] = $newSynoms;
+        unset($synoms[$key]);
+      }
+      if ($r == 2) {
+        unset($synoms[$key]);
+      }
       if ($synom['is_primary'] == 1) {
         $synoms = self::moveValueByIndex($synoms, $key, 0);
       }
@@ -316,7 +382,7 @@ class Application
       }
     }
     $odesk = self::checkOdeskSkillsByTerms($_check);
-    
+
     $out['synoms'] = $synoms;
     if (!empty($disambiguations)) {
       $out['disambiguations'] = $disambiguations;
@@ -325,6 +391,101 @@ class Application
       $out['odesk'] = $odesk;
     }
     return $out;
+  }
+
+  static function getSynonymsV2($key = null)
+  {
+    $data = array();
+    $data2 = array();
+    if (!$key) {
+      return array(
+          'http' => 204,
+          'message' => 'No term to search',
+        );
+    }
+    $key = str_replace(' ', '_', $key);
+    $query_ci = sprintf("SELECT * FROM page_relation WHERE (stitle = '%s' OR ttitle = '%s') AND (snamespace = 0) AND (tnamespace = 0 OR tnamespace = 14) GROUP BY tid ", $key, $key);
+    $query_cs = sprintf("SELECT * FROM page_relation WHERE (stitle_cs = '%s' OR ttitle_cs = '%s') AND (snamespace = 0) AND (tnamespace = 0 OR tnamespace = 14) GROUP BY tid ", $key, $key);
+//    $query_cs = sprintf("SELECT * FROM page_relation WHERE (CONVERT(stitle USING latin1) COLLATE latin1_general_cs = '%s' OR CONVERT(ttitle USING latin1) COLLATE latin1_general_cs = '%s') AND (snamespace = 0) AND (tnamespace = 0 OR tnamespace = 14)  GROUP BY tid", $key, $key);
+    self::doConnect();
+    $result1 = mysql_query($query_ci);
+    while ($row = mysql_fetch_assoc($result1)) {
+      $data[] = $row;
+    }
+    self::doClose();
+    if (count($data) > 1) {
+      self::doConnect();
+      $result = mysql_query($query_cs);
+      while ($row = mysql_fetch_assoc($result)) {
+        $data2[] = $row;
+      }
+      self::doClose();
+      if (count($data2) > 1) {
+        return array(
+            'http' => 204,
+            'message' => 'Very bad query???',
+          );
+      } elseif (count($data2) < 1) {
+        $terms = array();
+        foreach ($data as $term) {
+          $terms[] = $term['ttitle'];
+        }
+        return array(
+            'http' => 300,
+            'message' => 'Multiple matches found because of ambiguous capitalization of the query. Please query again with one of the returned terms',
+            'terms' => $terms
+          );
+      } else {
+        if (self::checkDisambiguation($data2[0]['ttitle'])) {
+          return array(
+              'http' => 300,
+              'message' => 'The entry is a disambiguation page in Wikipedia. Please query again with one of the returned terms',
+              'terms' => self::getDisambiguationLinks($data2[0]['tid'])
+            );
+        } else {
+          $synoms = array($data2[0]['ttitle']);
+          $query2 = "SELECT * FROM page_relation WHERE tid = '" . $data2[0]['tid'] . "'";
+          self::doConnect();
+          $result2 = mysql_query($query2);
+          while ($row2 = mysql_fetch_assoc($result2)) {
+            $synoms[] = $row2['stitle'];
+          }
+          self::doClose();
+          return array(
+              'http' => 200,
+              'message' => 'success',
+              'synonyms' => $synoms
+            );
+        }
+      }
+    } elseif (count($data) < 1) {
+      return array(
+          'http' => 204,
+          'message' => 'no content'
+        );
+    } else {
+      if (self::checkDisambiguation($data[0]['ttitle'])) {
+        return array(
+            'http' => 300,
+            'message' => 'The entry is a disambiguation page in Wikipedia. Please query again with one of the returned terms',
+            'terms' => self::getDisambiguationLinks($data[0]['tid'])
+          );
+      } else {
+        $synoms = array($data[0]['ttitle']);
+        $query_s = "SELECT * FROM page_relation WHERE tid = '" . $data[0]['tid'] . "'";
+        self::doConnect();
+        $result_s = mysql_query($query_s);
+        while ($row_s = mysql_fetch_assoc($result_s)) {
+          $synoms[] = str_replace('_', ' ', $row_s['stitle']);
+        }
+        self::doClose();
+        return array(
+            'http' => 200,
+            'message' => 'success',
+            'synonyms' => $synoms
+          );
+      }
+    }
   }
 
 }

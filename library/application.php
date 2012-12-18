@@ -428,7 +428,7 @@ class Application
       } elseif (count($data2) < 1) {
         $terms = array();
         foreach ($data as $term) {
-          $terms[] = $term['ttitle'];
+          $terms[] = str_replace('_', ' ', $term['ttitle']);
         }
         return array(
             'http' => 300,
@@ -436,19 +436,19 @@ class Application
             'terms' => $terms
           );
       } else {
-        if (self::checkDisambiguation($data2[0]['ttitle'])) {
+        if (self::checkDisambiguation(str_replace('_', ' ', $data2[0]['ttitle']))) {
           return array(
               'http' => 300,
               'message' => 'The entry is a disambiguation page in Wikipedia. Please query again with one of the returned terms',
               'terms' => self::getDisambiguationLinks($data2[0]['tid'])
             );
         } else {
-          $synoms = array($data2[0]['ttitle']);
+          $synoms = array(str_replace('_', ' ', $data2[0]['ttitle']));
           $query2 = "SELECT * FROM page_relation WHERE tid = '" . $data2[0]['tid'] . "'";
           self::doConnect();
           $result2 = mysql_query($query2);
           while ($row2 = mysql_fetch_assoc($result2)) {
-            $synoms[] = $row2['stitle'];
+            $synoms[] = str_replace('_', ' ', $row2['stitle']);
           }
           self::doClose();
           return array(
@@ -471,7 +471,7 @@ class Application
             'terms' => self::getDisambiguationLinks($data[0]['tid'])
           );
       } else {
-        $synoms = array($data[0]['ttitle']);
+        $synoms = array(str_replace('_', ' ', $data[0]['ttitle']));
         $query_s = "SELECT * FROM page_relation WHERE tid = '" . $data[0]['tid'] . "'";
         self::doConnect();
         $result_s = mysql_query($query_s);

@@ -1,11 +1,11 @@
 <?php
 
-if (isset($_POST['term'])) {
-  $term = strip_tags(trim($_POST['term']));
+if (isset($_POST['term']) || isset($_REQUEST['term'])) {
+  $term = $_POST['term'] ? strip_tags(trim($_POST['term'])) : strip_tags(trim($_REQUEST['term']));
   $synoms = Application::getSynonymsV2($term);
-  header('Content-type: application/json', true, $synoms['http']);
-  echo json_encode($synoms);
-  die();
-} else {
-  $content = $smarty->fetch('search.tpl');
+  
+  $smarty->assign('synonyms', $synoms);
+  $smarty->assign('term', $term);
 }
+$content = $smarty->fetch('search.tpl');
+

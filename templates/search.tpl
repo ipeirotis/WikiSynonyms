@@ -6,13 +6,13 @@
     <h4 class="pitch">
       <span class="muted">Please enter a term or a phrase you want to search synonyms for:</span>
     </h4>
-    <form>
+    <form action="./?action=search" method="POST">
       <input id="term" name="term" type="text" {if $term}value="{$term}"{/if}><input class="btn btn-subscribe btn-xlarge" type="submit" value="Search">
     </form>
   </div>
 </div>
 {if $synonyms}
-<div id="results">
+<div id="results" class="container">
   {if $synonyms['http'] != 200}
     {if $synonyms['http'] == 204}
     <div class="alert alert-error">

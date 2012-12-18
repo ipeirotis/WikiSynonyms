@@ -454,7 +454,7 @@ class Application
           return array(
               'http' => 200,
               'message' => 'success',
-              'synonyms' => $synoms
+              'terms' => $synoms
             );
         }
       }
@@ -482,7 +482,7 @@ class Application
         return array(
             'http' => 200,
             'message' => 'success',
-            'synonyms' => $synoms
+            'terms' => $synoms
           );
       }
     }

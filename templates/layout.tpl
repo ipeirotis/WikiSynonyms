@@ -31,7 +31,7 @@
       <div class="masthead">
         <ul class="nav nav-pills pull-right">
           <li class="{if !$action || $action == 'default'}active{/if}"><a href="./">Home</a></li>
-          <li class="{if $action == 'search'}active{/if}"><a href="./?action=search">Search</a></li>
+          <li class="{if $action == 'search'}active{/if}"><a href="./search">Search</a></li>
           <li><a href="#">About</a></li>
           <li><a href="#">API</a></li>
           <li><a href="#">Contact</a></li>
@@ -40,9 +40,9 @@
       </div>
 
       <hr>
-
+      <div id="main">
       {$content}
-
+      </div>
       <hr/>
 
       <div class="footer">

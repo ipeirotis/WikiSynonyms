@@ -6,7 +6,7 @@
     <h4 class="pitch">
       <span class="muted">Please enter a term or a phrase you want to search synonyms for:</span>
     </h4>
-    <form action="./?action=search" method="POST">
+    <form action="./search" method="POST">
       <input id="term" name="term" type="text" {if $term}value="{$term}"{/if}><input class="btn btn-subscribe btn-xlarge" type="submit" value="Search">
     </form>
   </div>

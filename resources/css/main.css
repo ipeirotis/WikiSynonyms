@@ -3,6 +3,9 @@ body {
   padding-bottom: 40px;
 }
 
+div#main {
+  min-height: 400px;
+}
 .muted a:hover {
   text-decoration: none;
 }

@@ -1,52 +1,19 @@
-<div>
-  {if $errors}
-  <ul class="error_list">
-      {foreach $errors as $error}
-      <li>{$error}</li>
-      {/foreach}
-  </ul>
-  {/if}
-  <form action="./index.php?action=search" method="post">
-    <input type="hidden" name="submit" value="1"/>
-    <input type="text" name="term" value="{$values.term}"/>
-    <button type="submit">Search</button>
-  </form>
+<div id="newsletter">
+  <div class="container">
+    <h3 class="title">
+      <span>WikiSynonyms is a <strong>reliable</strong> platform to search synonyms.</span>
+    </h3>
+    <h4 class="pitch">
+      <span>Please enter a term or a phrase to search for synonyms</span>
+    </h4>
+    <form>
+      <input id="term" name="term" type="text" placeholder=""><input class="btn btn-subscribe btn-xlarge" type="submit" value="Search">
+    </form>
+  </div>
 </div>
-<br/>
-<br/>
-{if $values.term }
-<strong>{$total}</strong> synonym(s) has been found for term <strong>{$values.term}</strong>:<br/>
-<ol>
-  {foreach $synonyms as $synonym}
-  <li {if $synonym['is_primary'] == 1 }style="color:green;"{elseif $synonym['is_primary'] == 2} style="color:red;" {/if}>
-    {$synonym['term']}
-  </li>
-  {/foreach}
-</ol>
 
-{foreach $disambiguations as $k => $disambiguation}
-<span style="color:red;">{$k}</span>
-<ol>
-  {foreach $disambiguation as $link}
-  <li>
-    {$link}
-  </li>
-  {/foreach}
-</ol>
-{/foreach}
+<div id="results"></div>
 
-{if $odesk}
-<span>oDesk Skills</span>
-<ol>
-  {foreach $odesk as $skill}
-  <li>
-    {if $skill['external_link']}
-      <a href="{$skill['external_link']}" target="_blank">{$skill['skill']} ({$skill['pretty_name']})</a>
-    {else}
-      {$skill['skill']} ({$skill['pretty_name']})
-    {/if}
-  </li>
-  {/foreach}
-</ol>
-{/if}
-{/if}
+<script type="text/javascript">
+
+</script>

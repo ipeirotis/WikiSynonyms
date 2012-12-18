@@ -1,32 +1,11 @@
 <?php
 
-if ($_POST['submit']) {
+if (isset($_POST['term'])) {
   $term = strip_tags(trim($_POST['term']));
-  $errors = array();
-  if (!$term) {
-    $errors['term'] = 'Term can not be empty!';
-  } else if (strlen($term) < 1) {
-    $errors['term'] = 'Term has to be 1 characters and more!';
-  } else if (strlen($term) > 255) {
-    $errors['term'] = 'Term can not be more than 255 characters!';
-  }
-
-  $smarty->assign('values', $_POST);
-  if ($errors) {
-    $smarty->assign('errors', $errors);
-  } else {
-    $synoms = Application::getSynonyms($term);
-    $total = count($synoms['synoms']) + count($synoms['disambiguations']) + count($synoms['odesk']);
-    if (count($synoms['disambiguations'])) {
-      foreach ($synoms['disambiguations'] as $disambiguation) {
-        $total = $total + count($disambiguation);
-      }
-    }
-    $smarty->assign('synonyms', $synoms['synoms']);
-    $smarty->assign('disambiguations', $synoms['disambiguations']);
-    $smarty->assign('odesk', $synoms['odesk']);
-    $smarty->assign('total', $total);
-  }
+  $synoms = Application::getSynonymsV2($term);
+  header('Content-type: application/json', true, $synoms['http']);
+  echo json_encode($synoms);
+  die();
+} else {
+  $content = $smarty->fetch('search.tpl');
 }
-
-$content = $smarty->fetch('search.tpl');

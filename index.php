@@ -15,11 +15,12 @@ $smarty->setCacheDir($base . '/library/smarty/cache');
 $smarty->setConfigDir($base . '/library/smarty/configs');
 
 $content = '';
-$action = isset($_REQUEST['action']) ? strtolower($_REQUEST['action']) : 'search';
+$action = isset($_REQUEST['action']) ? strtolower($_REQUEST['action']) : 'default';
 $script = $base . '/scripts/' . $action . '.php';
 if (file_exists($script)) {
   require $script;
 }
 
+$smarty->assign('action', $action);
 $smarty->assign('content', $content);
 $smarty->display('layout.tpl');

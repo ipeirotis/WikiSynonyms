@@ -1,0 +1,6 @@
+RewriteEngine on
+RewriteRule ^(.*)\/$ $1 [L]
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-l
+RewriteRule ^(.+)$ index.php?action=$1 [QSA,L]

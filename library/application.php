@@ -190,7 +190,6 @@ class Application
       return;
     }
     $key = str_replace(' ', '_', $key);
-//    die($key);
     $data = array();
 
     self::doConnect();
@@ -204,11 +203,6 @@ class Application
     }
 
     self::doClose();
-//    if (!empty($data)) {
-//      echo $key;
-//      var_dump($data);
-//      die();
-//    }
     foreach ($data as $v => $category) {
       if ($category == 'Disambiguation_pages') {
         $out = 1;
@@ -230,14 +224,12 @@ class Application
     foreach ($keys as $key => $value) {
       $keys[$key] = (string) str_replace(' ', '_', $value);
     }
-//    die($key);
     $data = array();
 
     self::doConnect();
     $k = implode("', '", $keys);
     $query = "SELECT page.page_title as page, GROUP_CONCAT(categorylinks.cl_to) as categories FROM page JOIN categorylinks ON categorylinks.cl_from = page.page_id WHERE page.page_namespace = 0 AND page.page_title IN ('" . $k . "') GROUP BY page.page_title";
 
-//    die($query);
     $results = mysql_query($query);
     if ($results) {
       while ($row = mysql_fetch_assoc($results)) {
@@ -255,145 +247,10 @@ class Application
         unset($data[$d]);
       }
     }
-//    if (!empty($data)) {
-//      var_dump($data);
-//      die();
-//    }
     return $data;
   }
 
   static function getSynonyms($key = null)
-  {
-    self::doConnect();
-    $temp_synoms = array();
-    $synoms = array();
-    $data = array();
-    $data2 = array();
-    if ($key) {
-
-//      $key = ucwords($key);
-      $key = str_replace(' ', '_', $key);
-//      $query = sprintf("SELECT * FROM page_relation WHERE (stitle = '%s' OR ttitle = '%s')  ", $key, $key);
-      $query_cs = sprintf("SELECT * FROM page_relation WHERE (CONVERT(stitle USING latin1) COLLATE latin1_general_cs = '%s' OR CONVERT(ttitle USING latin1) COLLATE latin1_general_cs = '%s') AND (snamespace = 0) AND (tnamespace = 0 OR tnamespace = 14)  ", $key, $key);
-      $query_ci = sprintf("SELECT * FROM page_relation WHERE (stitle = '%s' OR ttitle = '%s') AND (snamespace = 0) AND (tnamespace = 0 OR tnamespace = 14)  ", $key, $key);
-//      $result = mysql_query($query_cs);
-//      if (mysql_num_rows($result) < 1){
-      $result = mysql_query($query_ci);
-//      }
-      while ($row = mysql_fetch_assoc($result)) {
-        $data[] = $row;
-      }
-    }
-    self::doClose();
-
-    $new_bpages = array();
-    foreach ($data as $d) {
-      $new_bpages[] = $d['tid'];
-      if (!in_array(str_replace('_', ' ', $d['stitle']), $temp_synoms)) {
-        $temp_synoms[] = str_replace('_', ' ', $d['stitle']);
-        $synoms[] = array(
-          'id' => $d['sid'],
-          'term' => str_replace('_', ' ', $d['stitle']),
-          'ns' => $d['snamespace'],
-          'is_primary' => 0,
-        );
-      }
-      if (!in_array(str_replace('_', ' ', $d['ttitle']), $temp_synoms)) {
-        $temp_synoms[] = str_replace('_', ' ', $d['ttitle']);
-        $synoms[] = array(
-          'id' => $d['tid'],
-          'term' => str_replace('_', ' ', $d['ttitle']),
-          'ns' => $d['tnamespace'],
-          'is_primary' => 1,
-        );
-      }
-    }
-    if (!empty($new_bpages)) {
-      self::doConnect();
-      $query2 = "SELECT * FROM page_relation WHERE tid IN (" . implode(',', $new_bpages) . ")";
-      $result2 = mysql_query($query2);
-
-      while ($row2 = mysql_fetch_assoc($result2)) {
-        $data2[] = $row2;
-        if (!in_array(str_replace('_', ' ', $row2['stitle']), $temp_synoms)) {
-          $temp_synoms[] = str_replace('_', ' ', $row2['stitle']);
-          $synoms[] = array(
-            'id' => $row2['sid'],
-            'term' => str_replace('_', ' ', $row2['stitle']),
-            'ns' => $row2['snamespace'],
-            'is_primary' => 0,
-          );
-        }
-        if (!in_array(str_replace('_', ' ', $row2['ttitle']), $temp_synoms)) {
-          $temp_synoms[] = str_replace('_', ' ', $row2['ttitle']);
-          $synoms[] = array(
-            'id' => $row2['tid'],
-            'term' => str_replace('_', ' ', $row2['ttitle']),
-            'ns' => $row2['tnamespace'],
-            'is_primary' => 1,
-          );
-        }
-      }
-      self::doClose();
-    }
-
-    if ((in_array($key, $data) || in_array($key, $data2)) && !in_array($key, $synoms)) {
-      array_unshift($synoms, array(
-        'id' => null,
-        'term' => str_replace('_', ' ', $key),
-        'ns' => -100,
-        'is_primary' => 1,
-        )
-      );
-    }
-    $_check = array();
-    $disambiguations = array();
-    foreach ($synoms as $key => $synom) {
-      $_check[] = $synom['term'];
-      $r = self::checkDisambiguation($synom['term']);
-      if ($r == 1) {
-        $synoms[$key]['is_primary'] = 2;
-        $newSynoms = self::getDisambiguationLinks($synoms[$key]['id']);
-        $disambiguations[$synom['term']] = $newSynoms;
-        unset($synoms[$key]);
-      }
-      if ($r == 2) {
-        unset($synoms[$key]);
-      }
-      if ($synom['is_primary'] == 1) {
-        $synoms = self::moveValueByIndex($synoms, $key, 0);
-      }
-    }
-    $disambigs = self::checkDisambiguations($_check);
-    if ($disambigs && !empty($disambigs)) {
-      foreach ($synoms as $key => $synom) {
-        if (array_key_exists(str_replace(' ', '_', $synom['term']), $disambigs)) {
-          if (in_array('Unprintworthy_redirects', $disambigs[str_replace(' ', '_', $synom['term'])])) {
-            unset($synoms[$key]);
-          }
-          if (in_array('Disambiguation_pages', $disambigs[str_replace(' ', '_', $synom['term'])])) {
-            $newSynoms = self::getDisambiguationLinks($synoms[$key]['id']);
-            if ($newSynoms && !empty($newSynoms)) {
-              $disambiguations[$synom['term']] = $newSynoms;
-            }
-            unset($synoms[$key]);
-          }
-        }
-      }
-    }
-    $odesk = self::checkOdeskSkillsByTerms($_check);
-
-    $out['synoms'] = $synoms;
-    if (!empty($disambiguations)) {
-      $out['disambiguations'] = $disambiguations;
-    }
-    if (!empty($odesk)) {
-      $out['odesk'] = $odesk;
-    }
-    return $out;
-  }
-
-  static function getSynonymsV2($key = null)
   {
     $data = array();
     $data2 = array();
@@ -406,7 +263,6 @@ class Application
     $key = str_replace(' ', '_', $key);
     $query_ci = sprintf("SELECT * FROM page_relation WHERE (stitle = '%s' OR ttitle = '%s') AND (snamespace = 0) AND (tnamespace = 0 OR tnamespace = 14) GROUP BY tid ", $key, $key);
     $query_cs = sprintf("SELECT * FROM page_relation WHERE (stitle_cs = '%s' OR ttitle_cs = '%s') AND (snamespace = 0) AND (tnamespace = 0 OR tnamespace = 14) GROUP BY tid ", $key, $key);
-//    $query_cs = sprintf("SELECT * FROM page_relation WHERE (CONVERT(stitle USING latin1) COLLATE latin1_general_cs = '%s' OR CONVERT(ttitle USING latin1) COLLATE latin1_general_cs = '%s') AND (snamespace = 0) AND (tnamespace = 0 OR tnamespace = 14)  GROUP BY tid", $key, $key);
     self::doConnect();
     $result1 = mysql_query($query_ci);
     while ($row = mysql_fetch_assoc($result1)) {

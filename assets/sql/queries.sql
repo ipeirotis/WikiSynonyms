@@ -27,7 +27,7 @@ ALTER TABLE page_relation MODIFY
       COLLATE latin1_general_cs;
 
 UPDATE page_relation SET stitle_cs = stitle;
-CREATE INDEX ix_stitle_cs ON DB_NAME.page_relation (stitle_cs);
+CREATE INDEX ix_stitle_cs ON page_relation (stitle_cs);
 
 ALTER TABLE page_relation ADD ttitle_cs varchar(255) CHARACTER SET latin1 COLLATE latin1_general_cs;
 ALTER TABLE page_relation MODIFY
@@ -36,4 +36,4 @@ ALTER TABLE page_relation MODIFY
       COLLATE latin1_general_cs;
 
 UPDATE page_relation SET ttitle_cs = ttitle;
-CREATE INDEX ix_ttitle_cs ON DB_NAME.page_relation (ttitle_cs);
+CREATE INDEX ix_ttitle_cs ON page_relation (ttitle_cs);

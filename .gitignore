@@ -1,3 +1,4 @@
 library/smarty/templates_c/*
 library/smarty/cache/*
 config/config.php
+!/tests/config/config.php

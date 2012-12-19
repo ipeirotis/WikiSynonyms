@@ -2,7 +2,7 @@
 
 error_reporting(E_ALL ^ E_NOTICE);
 require 'config/config.php';
-require('vendors/smarty/Smarty.class.php');
+require('library/smarty/Smarty.class.php');
 require 'library/helper.php';
 require 'library/application.php';
 

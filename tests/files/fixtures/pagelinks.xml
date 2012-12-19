@@ -1,0 +1,342 @@
+<?xml version="1.0"?>
+<mysqldump xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <database name="wiki">
+    <table_structure name="pagelinks">
+      <field Field="pl_from" Type="int(10) unsigned" Null="NO" Key="PRI" Default="0" Extra="" />
+      <field Field="pl_namespace" Type="int(11)" Null="NO" Key="PRI" Default="0" Extra="" />
+      <field Field="pl_title" Type="varchar(255)" Null="NO" Key="PRI" Default="" Extra="" />
+      <key Table="pagelinks" Non_unique="0" Key_name="pl_from" Seq_in_index="1" Column_name="pl_from" Collation="A" Null="" Index_type="BTREE" Comment="" />
+      <key Table="pagelinks" Non_unique="0" Key_name="pl_from" Seq_in_index="2" Column_name="pl_namespace" Collation="A" Null="" Index_type="BTREE" Comment="" />
+      <key Table="pagelinks" Non_unique="0" Key_name="pl_from" Seq_in_index="3" Column_name="pl_title" Collation="A" Cardinality="0" Null="" Index_type="BTREE" Comment="" />
+      <key Table="pagelinks" Non_unique="0" Key_name="pl_namespace" Seq_in_index="1" Column_name="pl_namespace" Collation="A" Null="" Index_type="BTREE" Comment="" />
+      <key Table="pagelinks" Non_unique="0" Key_name="pl_namespace" Seq_in_index="2" Column_name="pl_title" Collation="A" Null="" Index_type="BTREE" Comment="" />
+      <key Table="pagelinks" Non_unique="0" Key_name="pl_namespace" Seq_in_index="3" Column_name="pl_from" Collation="A" Cardinality="0" Null="" Index_type="BTREE" Comment="" />
+      <options Name="pagelinks" Engine="MyISAM" Version="10" Row_format="Dynamic" Rows="0" Avg_row_length="0" Data_length="0" Max_data_length="281474976710655" Index_length="4096" Data_free="0" Create_time="2012-05-28 10:01:28" Update_time="2012-05-28 10:01:28" Collation="utf8_general_ci" Create_options="" Comment="" />
+    </table_structure>
+    <table_data name="pagelinks">
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">1953_Iranian_coup_d'état</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">AFC_Ajax</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Aias_Salamina_F.C.</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Ajak</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Ajax,_Louisiana</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Ajax,_Ontario</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Ajax,_Utah</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Ajax_(1906_automobile)</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Ajax_(1913_automobile)</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Ajax_(1914_automobile)</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Ajax_(1921_automobile)</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Ajax_(American_automobile)</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Ajax_(DJ)</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Ajax_(Disney)</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Ajax_(Sophocles)</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Ajax_(band)</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Ajax_(cleaning_product)</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Ajax_(comics)</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Ajax_(floppy_disk_controller)</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Ajax_(horse)</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Ajax_(missionary)</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Ajax_(mythology)</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Ajax_(programming)</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Ajax_(video_game)</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Ajax_Cape_Town_FC</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Ajax_Duckman</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Ajax_Futebol_Clube</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Ajax_GO_Station</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Ajax_Heroes</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Ajax_High_School</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Ajax_II</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Ajax_Kenitra</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Ajax_Orlando_Prospects</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Ajax_Records_(Quebec)</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Ajax_Sportman_Combinatie</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Ajax_de_Ouenzé</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Ajax_framework</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Ajax_the_Lesser</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Aspen_Mountain_(Colorado)</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Ayaks</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">FC_Ajax_Lasnamäe</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">FC_Ajax_Sofia</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">HMS_Ajax</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Kanichee_Mine</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">LMS_Royal_Scot_Class</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">List_of_The_Warriors_characters</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Martian_Manhunter</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Nike_Ajax</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Rabat_Ajax_F.C.</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Sidney_William_Jackson</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">South_Devon_Railway_Dido_class</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">The_Pop_Culture_Suicides</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">USS_Ajax</field>
+      </row>
+
+      <row>
+        <field name="pl_from">1569</field>
+        <field name="pl_namespace">0</field>
+        <field name="pl_title">Unión_Ájax</field>
+      </row>
+    </table_data>
+  </database>
+</mysqldump>

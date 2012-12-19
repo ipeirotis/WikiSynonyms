@@ -1,0 +1,209 @@
+<?xml version="1.0"?>
+<mysqldump xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <database name="wiki">
+    <table_structure name="page_relation">
+      <field Field="sid" Type="int(10) unsigned" Null="NO" Key="PRI" Default="0" Extra="" />
+      <field Field="tid" Type="int(10) unsigned" Null="NO" Key="PRI" Default="0" Extra="" />
+      <field Field="snamespace" Type="int(11)" Null="NO" Key="" Extra="" />
+      <field Field="tnamespace" Type="int(11)" Null="NO" Key="" Extra="" />
+      <field Field="stitle" Type="varchar(255)" Null="NO" Key="" Extra="" />
+      <field Field="ttitle" Type="varchar(255)" Null="NO" Key="" Extra="" />
+      <field Field="stitle_cs" Type="varchar(255)" Null="YES" Key="MUL" Extra="" />
+      <field Field="ttitle_cs" Type="varchar(255)" Null="YES" Key="MUL" Extra="" />
+      <key Table="page_relation" Non_unique="0" Key_name="PRIMARY" Seq_in_index="1" Column_name="sid" Collation="A" Null="" Index_type="BTREE" Comment="" />
+      <key Table="page_relation" Non_unique="0" Key_name="PRIMARY" Seq_in_index="2" Column_name="tid" Collation="A" Cardinality="0" Null="" Index_type="BTREE" Comment="" />
+      <key Table="page_relation" Non_unique="1" Key_name="ix_stitle_cs" Seq_in_index="1" Column_name="stitle_cs" Collation="A" Null="YES" Index_type="BTREE" Comment="" />
+      <key Table="page_relation" Non_unique="1" Key_name="ix_ttitle_cs" Seq_in_index="1" Column_name="ttitle_cs" Collation="A" Null="YES" Index_type="BTREE" Comment="" />
+      <options Name="page_relation" Engine="MyISAM" Version="10" Row_format="Dynamic" Rows="0" Avg_row_length="0" Data_length="0" Max_data_length="281474976710655" Index_length="2048" Data_free="0" Create_time="2012-12-19 16:59:46" Update_time="2012-12-19 16:59:46" Collation="utf8_general_ci" Create_options="" Comment="" />
+    </table_structure>
+    <table_data name="page_relation">
+      <row>
+        <field name="sid">4772184</field>
+        <field name="tid">1569</field>
+        <field name="snamespace">0</field>
+        <field name="tnamespace">0</field>
+        <field name="stitle">Ajax_(disambiguation)</field>
+        <field name="ttitle">Ajax</field>
+        <field name="stitle_cs">Ajax_(disambiguation)</field>
+        <field name="ttitle_cs">Ajax</field>
+      </row>
+
+      <row>
+        <field name="sid">5754572</field>
+        <field name="tid">1569</field>
+        <field name="snamespace">0</field>
+        <field name="tnamespace">0</field>
+        <field name="stitle">Œë·º¥Œ±œÇ</field>
+        <field name="ttitle">Ajax</field>
+        <field name="stitle_cs">????</field>
+        <field name="ttitle_cs">Ajax</field>
+      </row>
+
+      <row>
+        <field name="sid">12595654</field>
+        <field name="tid">5031315</field>
+        <field name="snamespace">0</field>
+        <field name="tnamespace">0</field>
+        <field name="stitle">AjaX</field>
+        <field name="ttitle">The_Pop_Culture_Suicides</field>
+        <field name="stitle_cs">AjaX</field>
+        <field name="ttitle_cs">The_Pop_Culture_Suicides</field>
+      </row>
+
+      <row>
+        <field name="sid">33110624</field>
+        <field name="tid">1569</field>
+        <field name="snamespace">0</field>
+        <field name="tnamespace">0</field>
+        <field name="stitle">Ajax_(Disambiguation)</field>
+        <field name="ttitle">Ajax</field>
+        <field name="stitle_cs">Ajax_(Disambiguation)</field>
+        <field name="ttitle_cs">Ajax</field>
+      </row>
+      <row>
+        <field name="sid">1674788</field>
+        <field name="tid">1610950</field>
+        <field name="snamespace">0</field>
+        <field name="tnamespace">0</field>
+        <field name="stitle">Asynchronous_Javascript_and_XML</field>
+        <field name="ttitle">Ajax_(programming)</field>
+        <field name="stitle_cs">Asynchronous_Javascript_and_XML</field>
+        <field name="ttitle_cs">Ajax_(programming)</field>
+      </row>
+
+      <row>
+        <field name="sid">2447624</field>
+        <field name="tid">1610950</field>
+        <field name="snamespace">0</field>
+        <field name="tnamespace">0</field>
+        <field name="stitle">AJAX</field>
+        <field name="ttitle">Ajax_(programming)</field>
+        <field name="stitle_cs">AJAX</field>
+        <field name="ttitle_cs">Ajax_(programming)</field>
+      </row>
+
+      <row>
+        <field name="sid">4003355</field>
+        <field name="tid">1610950</field>
+        <field name="snamespace">0</field>
+        <field name="tnamespace">0</field>
+        <field name="stitle">CAJAX</field>
+        <field name="ttitle">Ajax_(programming)</field>
+        <field name="stitle_cs">CAJAX</field>
+        <field name="ttitle_cs">Ajax_(programming)</field>
+      </row>
+
+      <row>
+        <field name="sid">4225832</field>
+        <field name="tid">1610950</field>
+        <field name="snamespace">0</field>
+        <field name="tnamespace">0</field>
+        <field name="stitle">Asynchronous_JavaScript_and_JSON</field>
+        <field name="ttitle">Ajax_(programming)</field>
+        <field name="stitle_cs">Asynchronous_JavaScript_and_JSON</field>
+        <field name="ttitle_cs">Ajax_(programming)</field>
+      </row>
+
+      <row>
+        <field name="sid">4811327</field>
+        <field name="tid">1610950</field>
+        <field name="snamespace">0</field>
+        <field name="tnamespace">0</field>
+        <field name="stitle">Ajax_desktops</field>
+        <field name="ttitle">Ajax_(programming)</field>
+        <field name="stitle_cs">Ajax_desktops</field>
+        <field name="ttitle_cs">Ajax_(programming)</field>
+      </row>
+
+      <row>
+        <field name="sid">5436153</field>
+        <field name="tid">1610950</field>
+        <field name="snamespace">0</field>
+        <field name="tnamespace">0</field>
+        <field name="stitle">AJAX_(programming)</field>
+        <field name="ttitle">Ajax_(programming)</field>
+        <field name="stitle_cs">AJAX_(programming)</field>
+        <field name="ttitle_cs">Ajax_(programming)</field>
+      </row>
+
+      <row>
+        <field name="sid">7284880</field>
+        <field name="tid">1610950</field>
+        <field name="snamespace">0</field>
+        <field name="tnamespace">0</field>
+        <field name="stitle">List_of_websites_using_Ajax</field>
+        <field name="ttitle">Ajax_(programming)</field>
+        <field name="stitle_cs">List_of_websites_using_Ajax</field>
+        <field name="ttitle_cs">Ajax_(programming)</field>
+      </row>
+
+      <row>
+        <field name="sid">11481723</field>
+        <field name="tid">1610950</field>
+        <field name="snamespace">0</field>
+        <field name="tnamespace">0</field>
+        <field name="stitle">Chat_ajax</field>
+        <field name="ttitle">Ajax_(programming)</field>
+        <field name="stitle_cs">Chat_ajax</field>
+        <field name="ttitle_cs">Ajax_(programming)</field>
+      </row>
+
+      <row>
+        <field name="sid">13050446</field>
+        <field name="tid">1610950</field>
+        <field name="snamespace">0</field>
+        <field name="tnamespace">0</field>
+        <field name="stitle">Ajax_Development_Platforms</field>
+        <field name="ttitle">Ajax_(programming)</field>
+        <field name="stitle_cs">Ajax_Development_Platforms</field>
+        <field name="ttitle_cs">Ajax_(programming)</field>
+      </row>
+
+      <row>
+        <field name="sid">19445523</field>
+        <field name="tid">1610950</field>
+        <field name="snamespace">0</field>
+        <field name="tnamespace">0</field>
+        <field name="stitle">AJAXy</field>
+        <field name="ttitle">Ajax_(programming)</field>
+        <field name="stitle_cs">AJAXy</field>
+        <field name="ttitle_cs">Ajax_(programming)</field>
+      </row>
+
+      <row>
+        <field name="sid">22843362</field>
+        <field name="tid">1610950</field>
+        <field name="snamespace">0</field>
+        <field name="tnamespace">0</field>
+        <field name="stitle">Ajax_scripts</field>
+        <field name="ttitle">Ajax_(programming)</field>
+        <field name="stitle_cs">Ajax_scripts</field>
+        <field name="ttitle_cs">Ajax_(programming)</field>
+      </row>
+
+      <row>
+        <field name="sid">25953462</field>
+        <field name="tid">1610950</field>
+        <field name="snamespace">0</field>
+        <field name="tnamespace">0</field>
+        <field name="stitle">Ajax_language</field>
+        <field name="ttitle">Ajax_(programming)</field>
+        <field name="stitle_cs">Ajax_language</field>
+        <field name="ttitle_cs">Ajax_(programming)</field>
+      </row>
+
+      <row>
+        <field name="sid">30102854</field>
+        <field name="tid">1610950</field>
+        <field name="snamespace">0</field>
+        <field name="tnamespace">0</field>
+        <field name="stitle">Ajax_(programming</field>
+        <field name="ttitle">Ajax_(programming)</field>
+        <field name="stitle_cs">Ajax_(programming</field>
+        <field name="ttitle_cs">Ajax_(programming)</field>
+      </row>
+    
+    </table_data>
+  </database>
+</mysqldump>
+

@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<mysqldump xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <database name="wiki">
+    <table_structure name="page">
+      <field Field="page_id" Type="int(10) unsigned" Null="NO" Key="PRI" Extra="auto_increment" />
+      <field Field="page_namespace" Type="int(11)" Null="NO" Key="MUL" Extra="" />
+      <field Field="page_title" Type="varchar(255)" Null="NO" Key="" Extra="" />
+      <field Field="page_restrictions" Type="tinyblob" Null="NO" Key="" Extra="" />
+      <field Field="page_counter" Type="bigint(20) unsigned" Null="NO" Key="" Default="0" Extra="" />
+      <field Field="page_is_redirect" Type="tinyint(3) unsigned" Null="NO" Key="MUL" Default="0" Extra="" />
+      <field Field="page_is_new" Type="tinyint(3) unsigned" Null="NO" Key="" Default="0" Extra="" />
+      <field Field="page_random" Type="double unsigned" Null="NO" Key="MUL" Extra="" />
+      <field Field="page_touched" Type="binary(14)" Null="NO" Key="" Default="" Extra="" />
+      <field Field="page_latest" Type="int(10) unsigned" Null="NO" Key="" Extra="" />
+      <field Field="page_len" Type="int(10) unsigned" Null="NO" Key="MUL" Extra="" />
+      <key Table="page" Non_unique="0" Key_name="PRIMARY" Seq_in_index="1" Column_name="page_id" Collation="A" Cardinality="0" Null="" Index_type="BTREE" Comment="" />
+      <key Table="page" Non_unique="0" Key_name="name_title" Seq_in_index="1" Column_name="page_namespace" Collation="A" Null="" Index_type="BTREE" Comment="" />
+      <key Table="page" Non_unique="0" Key_name="name_title" Seq_in_index="2" Column_name="page_title" Collation="A" Cardinality="0" Null="" Index_type="BTREE" Comment="" />
+      <key Table="page" Non_unique="1" Key_name="page_random" Seq_in_index="1" Column_name="page_random" Collation="A" Null="" Index_type="BTREE" Comment="" />
+      <key Table="page" Non_unique="1" Key_name="page_len" Seq_in_index="1" Column_name="page_len" Collation="A" Null="" Index_type="BTREE" Comment="" />
+      <key Table="page" Non_unique="1" Key_name="page_redirect_namespace_len" Seq_in_index="1" Column_name="page_is_redirect" Collation="A" Null="" Index_type="BTREE" Comment="" />
+      <key Table="page" Non_unique="1" Key_name="page_redirect_namespace_len" Seq_in_index="2" Column_name="page_namespace" Collation="A" Null="" Index_type="BTREE" Comment="" />
+      <key Table="page" Non_unique="1" Key_name="page_redirect_namespace_len" Seq_in_index="3" Column_name="page_len" Collation="A" Null="" Index_type="BTREE" Comment="" />
+      <options Name="page" Engine="MyISAM" Version="10" Row_format="Dynamic" Rows="0" Avg_row_length="0" Data_length="0" Max_data_length="281474976710655" Index_length="4096" Data_free="0" Auto_increment="1" Create_time="2012-05-28 10:01:26" Update_time="2012-05-28 10:01:26" Check_time="2012-05-28 10:01:26" Collation="utf8_general_ci" Create_options="" Comment="" />
+    </table_structure>
+    <table_data name="page">
+      <row>
+        <field name="page_id">1569</field>
+        <field name="page_namespace">0</field>
+        <field name="page_title">Ajax</field>
+        <field name="page_restrictions"></field>
+        <field name="page_counter">287</field>
+        <field name="page_is_redirect">0</field>
+        <field name="page_is_new">0</field>
+        <field name="page_random">0.0379228312875357</field>
+        <field name="page_touched">20120329153622</field>
+        <field name="page_latest">484552312</field>
+        <field name="page_len">4960</field>
+      </row>
+
+      <row>
+        <field name="page_id">1610950</field>
+        <field name="page_namespace">0</field>
+        <field name="page_title">Ajax_(programming)</field>
+        <field name="page_restrictions"></field>
+        <field name="page_counter">0</field>
+        <field name="page_is_redirect">0</field>
+        <field name="page_is_new">0</field>
+        <field name="page_random">0.703033194899</field>
+        <field name="page_touched">20120430203047</field>
+        <field name="page_latest">490008583</field>
+        <field name="page_len">17556</field>
+      </row>
+    </table_data>
+  </database>
+</mysqldump>

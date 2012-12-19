@@ -1,0 +1,197 @@
+<?xml version="1.0"?>
+<mysqldump xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <database name="wiki">
+    <table_structure name="categorylinks">
+      <field Field="cl_from" Type="int(10) unsigned" Null="NO" Key="PRI" Default="0" Extra="" />
+      <field Field="cl_to" Type="varchar(255)" Null="NO" Key="PRI" Default="" Extra="" />
+      <field Field="cl_sortkey" Type="varbinary(230)" Null="NO" Key="" Default="" Extra="" />
+      <field Field="cl_sortkey_prefix" Type="varchar(255)" Null="NO" Key="" Default="" Extra="" />
+      <field Field="cl_timestamp" Type="timestamp" Null="NO" Key="" Default="CURRENT_TIMESTAMP" Extra="on update CURRENT_TIMESTAMP" />
+      <field Field="cl_collation" Type="varbinary(32)" Null="NO" Key="MUL" Default="" Extra="" />
+      <field Field="cl_type" Type="enum('page','subcat','file')" Null="NO" Key="" Default="page" Extra="" />
+      <key Table="categorylinks" Non_unique="0" Key_name="cl_from" Seq_in_index="1" Column_name="cl_from" Collation="A" Null="" Index_type="BTREE" Comment="" />
+      <key Table="categorylinks" Non_unique="0" Key_name="cl_from" Seq_in_index="2" Column_name="cl_to" Collation="A" Cardinality="0" Null="" Index_type="BTREE" Comment="" />
+      <key Table="categorylinks" Non_unique="1" Key_name="cl_sortkey" Seq_in_index="1" Column_name="cl_to" Collation="A" Null="" Index_type="BTREE" Comment="" />
+      <key Table="categorylinks" Non_unique="1" Key_name="cl_sortkey" Seq_in_index="2" Column_name="cl_type" Collation="A" Null="" Index_type="BTREE" Comment="" />
+      <key Table="categorylinks" Non_unique="1" Key_name="cl_sortkey" Seq_in_index="3" Column_name="cl_sortkey" Collation="A" Null="" Index_type="BTREE" Comment="" />
+      <key Table="categorylinks" Non_unique="1" Key_name="cl_sortkey" Seq_in_index="4" Column_name="cl_from" Collation="A" Null="" Index_type="BTREE" Comment="" />
+      <key Table="categorylinks" Non_unique="1" Key_name="cl_timestamp" Seq_in_index="1" Column_name="cl_to" Collation="A" Null="" Index_type="BTREE" Comment="" />
+      <key Table="categorylinks" Non_unique="1" Key_name="cl_timestamp" Seq_in_index="2" Column_name="cl_timestamp" Collation="A" Null="" Index_type="BTREE" Comment="" />
+      <key Table="categorylinks" Non_unique="1" Key_name="cl_collation" Seq_in_index="1" Column_name="cl_collation" Collation="A" Null="" Index_type="BTREE" Comment="" />
+      <options Name="categorylinks" Engine="MyISAM" Version="10" Row_format="Dynamic" Rows="0" Avg_row_length="0" Data_length="0" Max_data_length="281474976710655" Index_length="4096" Data_free="0" Create_time="2012-05-28 10:01:29" Update_time="2012-05-28 10:01:29" Check_time="2012-05-28 10:01:29" Collation="utf8_general_ci" Create_options="" Comment="" />
+    </table_structure>
+    <table_data name="categorylinks">
+      <row>
+        <field name="cl_from">1569</field>
+        <field name="cl_to">All_article_disambiguation_pages</field>
+        <field name="cl_sortkey">AJAX</field>
+        <field name="cl_timestamp">2010-05-20 12:36:01</field>
+        <field name="cl_sortkey_prefix"></field>
+        <field name="cl_collation">uppercase</field>
+        <field name="cl_type">page</field>
+      </row>
+
+      <row>
+        <field name="cl_from">1569</field>
+        <field name="cl_to">All_disambiguation_pages</field>
+        <field name="cl_sortkey">AJAX</field>
+        <field name="cl_timestamp">2010-05-20 12:36:01</field>
+        <field name="cl_sortkey_prefix"></field>
+        <field name="cl_collation">uppercase</field>
+        <field name="cl_type">page</field>
+      </row>
+
+      <row>
+        <field name="cl_from">1569</field>
+        <field name="cl_to">Article_Feedback_Blacklist</field>
+        <field name="cl_sortkey">AJAX</field>
+        <field name="cl_timestamp">2011-07-20 23:46:52</field>
+        <field name="cl_sortkey_prefix"></field>
+        <field name="cl_collation">uppercase</field>
+        <field name="cl_type">page</field>
+      </row>
+
+      <row>
+        <field name="cl_from">1569</field>
+        <field name="cl_to">Disambiguation_pages</field>
+        <field name="cl_sortkey">AJAX</field>
+        <field name="cl_timestamp">2010-05-20 12:36:01</field>
+        <field name="cl_sortkey_prefix"></field>
+        <field name="cl_collation">uppercase</field>
+        <field name="cl_type">page</field>
+      </row>
+  
+      <row>
+        <field name="cl_from">1610950</field>
+        <field name="cl_to">Ajax_(programming)</field>
+        <field name="cl_sortkey"> 
+          AJAX (PROGRAMMING)
+        </field>
+        <field name="cl_timestamp">2011-12-19 17:51:22</field>
+        <field name="cl_sortkey_prefix"> </field>
+        <field name="cl_collation">uppercase</field>
+        <field name="cl_type">page</field>
+      </row>
+
+      <row>
+        <field name="cl_from">1610950</field>
+        <field name="cl_to">All_articles_with_unsourced_statements</field>
+        <field name="cl_sortkey">AJAX (PROGRAMMING)
+          AJAX (PROGRAMMING)
+        </field>
+        <field name="cl_timestamp">2012-01-26 04:47:53</field>
+        <field name="cl_sortkey_prefix">Ajax (Programming)</field>
+        <field name="cl_collation">uppercase</field>
+        <field name="cl_type">page</field>
+      </row>
+
+      <row>
+        <field name="cl_from">1610950</field>
+        <field name="cl_to">Articles_with_unsourced_statements_from_January_2012</field>
+        <field name="cl_sortkey">AJAX (PROGRAMMING)
+          AJAX (PROGRAMMING)
+        </field>
+        <field name="cl_timestamp">2012-01-26 05:06:01</field>
+        <field name="cl_sortkey_prefix">Ajax (Programming)</field>
+        <field name="cl_collation">uppercase</field>
+        <field name="cl_type">page</field>
+      </row>
+
+      <row>
+        <field name="cl_from">1610950</field>
+        <field name="cl_to">Cloud_standards</field>
+        <field name="cl_sortkey">AJAX (PROGRAMMING)
+          AJAX (PROGRAMMING)
+        </field>
+        <field name="cl_timestamp">2010-01-13 15:10:46</field>
+        <field name="cl_sortkey_prefix">Ajax (Programming)</field>
+        <field name="cl_collation">uppercase</field>
+        <field name="cl_type">page</field>
+      </row>
+
+      <row>
+        <field name="cl_from">1610950</field>
+        <field name="cl_to">Inter-process_communication</field>
+        <field name="cl_sortkey">AJAX (PROGRAMMING)
+          AJAX (PROGRAMMING)
+        </field>
+        <field name="cl_timestamp">2010-01-13 15:10:46</field>
+        <field name="cl_sortkey_prefix">Ajax (Programming)</field>
+        <field name="cl_collation">uppercase</field>
+        <field name="cl_type">page</field>
+      </row>
+
+      <row>
+        <field name="cl_from">1610950</field>
+        <field name="cl_to">JavaScript</field>
+        <field name="cl_sortkey">AJAX (PROGRAMMING)
+          AJAX (PROGRAMMING)
+        </field>
+        <field name="cl_timestamp">2010-04-07 12:43:03</field>
+        <field name="cl_sortkey_prefix">Ajax (Programming)</field>
+        <field name="cl_collation">uppercase</field>
+        <field name="cl_type">page</field>
+      </row>
+
+      <row>
+        <field name="cl_from">1610950</field>
+        <field name="cl_to">Use_dmy_dates_from_January_2012</field>
+        <field name="cl_sortkey">AJAX (PROGRAMMING)
+          AJAX (PROGRAMMING)
+        </field>
+        <field name="cl_timestamp">2012-01-12 11:36:29</field>
+        <field name="cl_sortkey_prefix">Ajax (Programming)</field>
+        <field name="cl_collation">uppercase</field>
+        <field name="cl_type">page</field>
+      </row>
+
+      <row>
+        <field name="cl_from">1610950</field>
+        <field name="cl_to">Web_2.0_neologisms</field>
+        <field name="cl_sortkey">AJAX (PROGRAMMING)
+          AJAX (PROGRAMMING)
+        </field>
+        <field name="cl_timestamp">2010-01-13 15:10:46</field>
+        <field name="cl_sortkey_prefix">Ajax (Programming)</field>
+        <field name="cl_collation">uppercase</field>
+        <field name="cl_type">page</field>
+      </row>
+
+      <row>
+        <field name="cl_from">1610950</field>
+        <field name="cl_to">Web_development</field>
+        <field name="cl_sortkey">AJAX (PROGRAMMING)
+          AJAX (PROGRAMMING)
+        </field>
+        <field name="cl_timestamp">2010-01-13 15:10:46</field>
+        <field name="cl_sortkey_prefix">Ajax (Programming)</field>
+        <field name="cl_collation">uppercase</field>
+        <field name="cl_type">page</field>
+      </row>
+
+      <row>
+        <field name="cl_from">1610950</field>
+        <field name="cl_to">Wikipedia_move-protected_pages</field>
+        <field name="cl_sortkey">AJAX (PROGRAMMING)
+          AJAX (PROGRAMMING)
+        </field>
+        <field name="cl_timestamp">2012-03-29 01:02:45</field>
+        <field name="cl_sortkey_prefix">Ajax (programming)</field>
+        <field name="cl_collation">uppercase</field>
+        <field name="cl_type">page</field>
+      </row>
+
+      <row>
+        <field name="cl_from">1610950</field>
+        <field name="cl_to">Wikipedia_protected_pages_without_expiry</field>
+        <field name="cl_sortkey">AJAX (PROGRAMMING)
+          AJAX (PROGRAMMING)
+        </field>
+        <field name="cl_timestamp">2012-03-29 01:02:45</field>
+        <field name="cl_sortkey_prefix">Ajax (programming)</field>
+        <field name="cl_collation">uppercase</field>
+        <field name="cl_type">page</field>
+      </row>
+    </table_data>
+  </database>
+</mysqldump>

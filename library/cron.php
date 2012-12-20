@@ -1,7 +1,5 @@
 <?php
 
-require_once '../config/config.php';
-
 class Cron
 {
 
@@ -18,7 +16,7 @@ class Cron
     mysql_close();
   }
 
-  static function refreshOdeskSkills()
+  static function refreshOdeskSkills($stop = null, $force = false)
   {
     try {
       $odesk_skills = json_decode(file_get_contents('http://www.odesk.com/api/profiles/v1/metadata/skills.json'));
@@ -26,9 +24,11 @@ class Cron
 
       $query = 'INSERT INTO odesk_skills (skill, pretty_name, external_link, description, wikipedia_page_id) VALUES ' . "\n";
       $i = 0;
-      $count = count($skills);
+      $count = $stop ? $stop : count($skills);
       foreach ($skills as $k => $skill) {
-        sleep(5);
+        if(!$force){
+          sleep(5);
+        }
         $skill_data = json_decode(file_get_contents('http://www.odesk.com/api/profiles/v1/metadata/skills/' . $skill . '.json'));
         $query .= sprintf("('%s', '%s', '%s', '%s', %s)", mysql_real_escape_string($skill_data->skill->skill), mysql_real_escape_string($skill_data->skill->skill), mysql_real_escape_string($skill_data->skill->external_link), mysql_real_escape_string($skill_data->skill->description), 0
         );
@@ -40,12 +40,11 @@ class Cron
           $query .= ",\n";
         }
       }
-      $fp = fopen('assets/cron_p/odesk-skills.sql', 'w');
+      $fp = fopen(dirname(dirname(__FILE__)) . '/assets/cron_p/odesk-skills.sql', 'w');
       fwrite($fp, $query);
       fclose($fp);
-      header("HTTP/1.1 200 Success");
-    } catch (Exception $exc) {
-      header("HTTP/1.1 500 Internal Server Error");
+    } catch (Exception $e) {
+      throw new Exception($e->getMessage());
     }
   }
 

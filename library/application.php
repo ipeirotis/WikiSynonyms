@@ -58,7 +58,7 @@ class Application
     return $data;
   }
 
-  static function getOdeskSkills($term = null)
+  static function getOdeskSkillsByTerm($term = null)
   {
     if (!$term) {
       return null;
@@ -83,32 +83,7 @@ class Application
     return $data;
   }
 
-  static function checkOdeskSkillsByTerm($term = null)
-  {
-    if (!$term) {
-      return null;
-    }
-
-    $data = array();
-
-    self::doConnect();
-
-    $query = sprintf("SELECT * FROM odesk_skills WHERE skill = ('%s')", str_replace('_', '-', $term));
-
-    $result = mysql_query($query);
-
-    if ($result) {
-      while ($row = mysql_fetch_assoc($result)) {
-        $data[] = $row;
-      }
-    }
-
-    self::doClose();
-
-    return $data;
-  }
-
-  static function checkOdeskSkillsByTerms($terms = array())
+  static function getOdeskSkillsByTerms($terms = array())
   {
     if (!$terms || empty($terms)) {
       return null;

@@ -10,7 +10,7 @@ if ($bones->request('term')) {
   header('Content-type: application/json', true, 204);
   die(
     json_encode(array(
-      'http' => 204,
+      'http' => 300,
       'message' => 'No term to search',
     ))
   );

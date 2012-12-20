@@ -7,5 +7,11 @@ if (isset($_REQUEST['term'])) {
   echo json_encode($synoms);
   die();
 } else {
-  die();
+  header('Content-type: application/json', true, 204);
+  die(
+    json_encode(array(
+      'http' => 204,
+      'message' => 'No term to search',
+    ))
+  );
 }

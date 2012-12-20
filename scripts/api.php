@@ -6,4 +6,6 @@ if (isset($_REQUEST['term'])) {
   header('Content-type: application/json', true, $synoms['http']);
   echo json_encode($synoms);
   die();
+} else {
+  die();
 }

@@ -7,7 +7,7 @@ if ($bones->request('term')) {
   echo json_encode($synoms);
   die();
 } else {
-  header('Content-type: application/json', true, 204);
+  header('Content-type: application/json', true, 300);
   die(
     json_encode(array(
       'http' => 300,

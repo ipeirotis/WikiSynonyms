@@ -2,7 +2,7 @@
 
 require_once 'config/config.php';
 require_once PHPU_PATH.'/Framework/TestCase.php';
-require_once dirname(dirname(__FILE__)) . '/library/Cron.php';
+require_once dirname(dirname(__FILE__)) . '/lib/cron.php';
 
 class CronTest extends PHPUnit_Framework_TestCase
 {

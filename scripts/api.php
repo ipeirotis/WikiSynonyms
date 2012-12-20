@@ -1,7 +1,7 @@
 <?php
 
-if (isset($_REQUEST['term'])) {
-  $term = strip_tags(trim($_REQUEST['term']));
+if ($bones->request('term')) {
+  $term = strip_tags(trim($bones->request('term')));
   $synoms = Application::getSynonyms($term);
   header('Content-type: application/json', true, $synoms['http']);
   echo json_encode($synoms);

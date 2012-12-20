@@ -2,7 +2,7 @@
 
 require_once 'config/config.php';
 require_once PHPU_PATH.'/Extensions/Database/TestCase.php';
-require_once dirname(dirname(__FILE__)) . '/library/application.php';
+require_once dirname(dirname(__FILE__)) . '/lib/application.php';
 
 class ApplicationTest extends PHPUnit_Extensions_Database_TestCase
 {

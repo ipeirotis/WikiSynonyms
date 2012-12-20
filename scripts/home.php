@@ -1,0 +1,3 @@
+<?php
+
+$bones->render('home');

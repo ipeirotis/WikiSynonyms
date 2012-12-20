@@ -1,4 +1,2 @@
-library/smarty/templates_c/*
-library/smarty/cache/*
 config/config.php
-assets/cron_p/*
+public/assets/cron_p/*

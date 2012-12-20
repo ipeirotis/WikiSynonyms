@@ -1,28 +1,6 @@
 <?php
+include 'config/config.php';
+include 'lib/bones.php';
+include 'config/routes.php';
 
-error_reporting(E_ALL ^ E_NOTICE);
-require 'config/config.php';
-require('library/smarty/Smarty.class.php');
-require 'library/helper.php';
-require 'library/application.php';
-
-
-$base = realpath(dirname(__FILE__));
-$smarty = new Smarty();
-$smarty->setTemplateDir($base . '/templates');
-$smarty->setCompileDir($base . '/library/smarty/templates_c');
-$smarty->setCacheDir($base . '/library/smarty/cache');
-$smarty->setConfigDir($base . '/library/smarty/configs');
-
-$content = '';
-$action = isset($_REQUEST['action']) ? strtolower($_REQUEST['action']) : 'default';
-$script = $base . '/scripts/' . $action . '.php';
-if (file_exists($script)) {
-  require $script;
-}
-
-$smarty->assign('action', $action);
-$smarty->assign('content', $content);
-if($action != 'api'){
-  $smarty->display('layout.tpl');
-}
+resolve();

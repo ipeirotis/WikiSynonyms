@@ -16,6 +16,15 @@ class Cron
     mysql_close();
   }
 
+  /**
+   * Function refreshOdeskSkills
+   *
+   * Produces SQL file with all the inserts for oDesk skills table (odesk_skills)
+   *
+   * @param int stop Number in which we might need the iteration to stop. 
+   * @param boolean force Boolean parameter if we need to force/sleep the iteration to avoid throttling from odesk server. 
+   * @return void
+   */
   static function refreshOdeskSkills($stop = null, $force = false)
   {
     try {
@@ -26,7 +35,7 @@ class Cron
       $i = 0;
       $count = $stop ? $stop : count($skills);
       foreach ($skills as $k => $skill) {
-        if(!$force){
+        if (!$force) {
           sleep(5);
         }
         $skill_data = json_decode(file_get_contents('http://www.odesk.com/api/profiles/v1/metadata/skills/' . $skill . '.json'));

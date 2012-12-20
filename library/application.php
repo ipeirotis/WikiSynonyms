@@ -107,7 +107,15 @@ class Application
 
     return $data;
   }
-
+  
+  /**
+   * Function getDisambiguationLinks
+   *
+   * Get all the page links of a disambiguation page. 
+   *
+   * @param int disambiguation page id of which to get the links. 
+   * @return array Returns array of page titles. If none found it returns NULL
+   */
   static function getDisambiguationLinks($id = null)
   {
     if (!$id) {
@@ -129,7 +137,15 @@ class Application
     }
     return null;
   }
-
+  
+  /**
+   * Function checkDisambiguation
+   *
+   * Checkes a page by title if belongs to disambiguation pages category. 
+   *
+   * @param string page title to check if it is disambiguation pages. 
+   * @return int 0: not a disambiguation page, 1:a disambiguation page, 2: Unprintworthy redirect
+   */
   static function checkDisambiguation($key = null)
   {
     $out = 0;
@@ -161,7 +177,15 @@ class Application
     }
     return $out;
   }
-
+  
+  /**
+   * Function checkDisambiguations
+   *
+   * Checkes if array of page titles are disambiguation pages. 
+   *
+   * @param array keys Array of page titles to check if they are disambiguation pages. 
+   * @return array Pages that are disambiguation pages.
+   */
   static function checkDisambiguations($keys = array())
   {
     $out = 0;
@@ -197,15 +221,54 @@ class Application
     return $data;
   }
 
+  /**
+   * Function getSynonyms
+   *
+   * 1. Issue case-insensitive query
+   *
+   * 1a. If 1 entry returned, keep it, proceed to step 3
+   * 1b. If n>1 entries returned
+   *  1b.a If only one entry is a non-redirect,
+   *  keep it, proceed to step 3
+   *  1b.b If more than one non-redirects, proceed to Step 2
+   * 1c. If no matching entries, return a 204 HTTP code (No content)
+   *  and a correcsponding message
+   *  
+   * 2. Issue a case-sensitive query, and fetch the matching term.
+   * // We follow this step only if there are more than 1 matches in Step 1
+   * // We expect to either have one exact match, or no matches
+   * 2a. If no matching terms, return a 300 HTTP code (multiple choices) and the
+   *     appropriate json, with the multiple entries from Step 1, and a warning message
+   *     "Multiple matches found because of ambiguous capitalization of the query.
+   *     Please query again with one of the returned terms"
+   * 2b. If matching term, keep it, proceed to Step 3
+   *
+   * 3. At this step, we have a single candidate term to use.
+   *
+   * 3a. If the term is a disambiguation page, return 300 HTTP code (multiple choices)
+   * and the appropriate json with the entries that appear in the disambiguation page
+   * and a warning message: "The entry is a disambiguation page in Wikipedia. Please query again with one of the returned terms."
+   *
+   * 3b. If the term is a redirect, then replace term with the redirect term, and repeat Step 3
+   *
+   * 3c. If the term is not a redirect, find all the redirect terms that lead to it, and return the terms that redirect to it as synonyms.
+   * Return the term as the canonical form in the JSON
+   *
+   * @param string key A string to search synonyms for 
+   * @return array 
+   * @example array('http'=>200, 'message'=>'success', 'terms'=>array('term1', 'term2', ...)) the terms are the synonyms
+   * @example array('http'=>300, 'message'=>'Error in capitalization/disambiguation', 'terms'=>array('term1', 'term2',...)) the terms are suggetion to search again
+   * @example array('http'=>204, 'message'=>'No content') No terms found/Error occured
+   */
   static function getSynonyms($key = null)
   {
     $data = array();
     $data2 = array();
     if (!$key) {
       return array(
-          'http' => 204,
-          'message' => 'No term to search',
-        );
+        'http' => 204,
+        'message' => 'No term to search',
+      );
     }
     $key = str_replace(' ', '_', $key);
     $query_ci = sprintf("SELECT * FROM page_relation WHERE (stitle = '%s' OR ttitle = '%s') AND (snamespace = 0) AND (tnamespace = 0 OR tnamespace = 14) GROUP BY tid ", $key, $key);
@@ -225,26 +288,26 @@ class Application
       self::doClose();
       if (count($data2) > 1) {
         return array(
-            'http' => 204,
-            'message' => 'Very bad query???',
-          );
+          'http' => 204,
+          'message' => 'Very bad query???',
+        );
       } elseif (count($data2) < 1) {
         $terms = array();
         foreach ($data as $term) {
           $terms[] = str_replace('_', ' ', $term['ttitle']);
         }
         return array(
-            'http' => 300,
-            'message' => 'Multiple matches found because of ambiguous capitalization of the query. Please query again with one of the returned terms',
-            'terms' => $terms
-          );
+          'http' => 300,
+          'message' => 'Multiple matches found because of ambiguous capitalization of the query. Please query again with one of the returned terms',
+          'terms' => $terms
+        );
       } else {
         if (self::checkDisambiguation(str_replace('_', ' ', $data2[0]['ttitle']))) {
           return array(
-              'http' => 300,
-              'message' => 'The entry is a disambiguation page in Wikipedia. Please query again with one of the returned terms',
-              'terms' => self::getDisambiguationLinks($data2[0]['tid'])
-            );
+            'http' => 300,
+            'message' => 'The entry is a disambiguation page in Wikipedia. Please query again with one of the returned terms',
+            'terms' => self::getDisambiguationLinks($data2[0]['tid'])
+          );
         } else {
           $synoms = array(str_replace('_', ' ', $data2[0]['ttitle']));
           $query2 = "SELECT * FROM page_relation WHERE tid = '" . $data2[0]['tid'] . "'";
@@ -255,24 +318,24 @@ class Application
           }
           self::doClose();
           return array(
-              'http' => 200,
-              'message' => 'success',
-              'terms' => $synoms
-            );
+            'http' => 200,
+            'message' => 'success',
+            'terms' => $synoms
+          );
         }
       }
     } elseif (count($data) < 1) {
       return array(
-          'http' => 204,
-          'message' => 'no content'
-        );
+        'http' => 204,
+        'message' => 'no content'
+      );
     } else {
       if (self::checkDisambiguation($data[0]['ttitle'])) {
         return array(
-            'http' => 300,
-            'message' => 'The entry is a disambiguation page in Wikipedia. Please query again with one of the returned terms',
-            'terms' => self::getDisambiguationLinks($data[0]['tid'])
-          );
+          'http' => 300,
+          'message' => 'The entry is a disambiguation page in Wikipedia. Please query again with one of the returned terms',
+          'terms' => self::getDisambiguationLinks($data[0]['tid'])
+        );
       } else {
         $synoms = array(str_replace('_', ' ', $data[0]['ttitle']));
         $query_s = "SELECT * FROM page_relation WHERE tid = '" . $data[0]['tid'] . "'";
@@ -283,10 +346,10 @@ class Application
         }
         self::doClose();
         return array(
-            'http' => 200,
-            'message' => 'success',
-            'terms' => $synoms
-          );
+          'http' => 200,
+          'message' => 'success',
+          'terms' => $synoms
+        );
       }
     }
   }

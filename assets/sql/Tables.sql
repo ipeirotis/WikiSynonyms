@@ -185,11 +185,18 @@ CREATE TABLE page_relation (
   tid int unsigned NOT NULL default 0,
   snamespace int NOT NULL,
   tnamespace int NOT NULL,
-  stitle varchar(255) binary NOT NULL,
-  ttitle varchar(255) binary NOT NULL,
+  stitle varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  ttitle varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  stitle_cs varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  ttitle_cs varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (sid, tid)
-)
+);
 
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci
+CREATE INDEX ix_sid ON page_relation (sid);  
+CREATE INDEX ix_tid ON page_relation (tid);
 
+CREATE INDEX ix_stitle ON page_relation (stitle);
+CREATE INDEX ix_ttitle ON page_relation (ttitle);
+
+CREATE INDEX ix_stitle_cs ON page_relation (stitle_cs);
+CREATE INDEX ix_ttitle_cs ON page_relation (ttitle_cs);

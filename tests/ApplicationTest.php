@@ -139,5 +139,16 @@ class ApplicationTest extends PHPUnit_Extensions_Database_TestCase
     $this->assertEquals(200, $r['http']);
     $this->assertEquals(14, count($r['terms']));
   }
+  
+  /**
+   *  @expectedGetSynonyms_3 For 'ajax' which produces a capitalization error!.
+   */
+  function testGetSynonyms_3()
+  {
+    $r = $this->App->getSynonyms('Ajax (programming)');
+    $this->assertEquals(300, $r['http']);
+    $this->assertEquals('Multiple matches found because of ambiguous capitalization of the query. Please query again with one of the returned terms', count($r['message']));
+    $this->assertEquals(3, count($r['terms']));
+  }
 
 }

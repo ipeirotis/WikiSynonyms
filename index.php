@@ -23,4 +23,6 @@ if (file_exists($script)) {
 
 $smarty->assign('action', $action);
 $smarty->assign('content', $content);
-$smarty->display('layout.tpl');
+if($action != 'api'){
+  $smarty->display('layout.tpl');
+}

@@ -1,4 +1,6 @@
 <?php
+
+//PLEASE EDIT THIS AND CREATE TEST DB
 define('DB_DSN', 'mysql:dbname=wiki;host=localhost');
 define('DB_HOST', 'localhost');
 define('DB_PORT', '3306');

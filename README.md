@@ -249,9 +249,9 @@ Step 8: Issues with capitalization and matching. (Issue #12)
 
 Using the query below we address a bit of the capitalization and matching issue:
 ~~<pre>
-SELECT * FROM page_relation ~~
-WHERE (CONVERT(stitle USING latin1) COLLATE latin1_general_cs 'TERM' ~~
-OR CONVERT(ttitle USING latin1) COLLATE latin1_general_cs = 'TERM') ~~
+SELECT * FROM page_relation 
+WHERE (CONVERT(stitle USING latin1) COLLATE latin1_general_cs 'TERM' 
+OR CONVERT(ttitle USING latin1) COLLATE latin1_general_cs = 'TERM') 
 AND snamespace = 0 
 AND tnamespace = 0;
 </pre>~~

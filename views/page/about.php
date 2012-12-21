@@ -238,7 +238,7 @@ CREATE INDEX /*i*/os_pretty_name ON /*_*/odesk_skills (pretty_name);
 <p>We execute the query first and then we execute the case insensitive one if no results from the first one.
 Though the query takes too long to be executed due to the on-the-fly conversion of the collation, so that should be a <b>temporary solution</b>.</p>
 
-<p>--<b>TODO: The best solution would be in step 4 to create a double table where we use case sensitive collation to perform the query without conversion on-the-fly.</b>--</p>
+<p><del><b>TODO: The best solution would be in step 4 to create a double table where we use case sensitive collation to perform the query without conversion on-the-fly.</b></del></p>
 
 <p>Created 2 extra columns (see build) stitle_cs and ttitle_cs with case sensitive collation to search and resolve capitalization issues.</p>
 

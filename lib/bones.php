@@ -105,10 +105,10 @@ class Bones
         $callback = ROOT . '/scripts/' . $callback_name . '.php';
         if (file_exists($callback)) {
           self::$route_found = true;
-          self::$active_route = $route;
+          self::$active_route = self::get_route();
           require $callback;
         } else {
-          return false;
+          return FALSE;
         }
       }
     }

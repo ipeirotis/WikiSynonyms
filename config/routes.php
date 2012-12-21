@@ -10,6 +10,8 @@ post('/search', 'search');
 get('/api', 'api');
 get('/api/:term', 'api');
 
+//pages
+get('/page/:page_name', 'page');
 
 //experimental
 

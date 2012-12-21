@@ -26,7 +26,7 @@ foreach ($skills as $k => $skill) {
 echo 'New: '.count($non).'<br/>';
 
 if (count($non) > 0) {
-  $fp = fopen('skills_to_add.json', 'w');
+  $fp = fopen(dirname(dirname(__FILE__)) . '/public/assets/produced/skills_to_add.json', 'w');
   fwrite($fp, json_encode($non));
   fclose($fp);
 
@@ -53,7 +53,7 @@ $wiki_skills = Application::getAllOdeskSkillsWithExternalLink();
 
 echo 'With link: '.count($wiki_skills).'<br/>';
 
-$fp = fopen('file.csv', 'w');
+$fp = fopen(dirname(dirname(__FILE__)) . '/public/assets/produced/file.csv', 'w');
 
 foreach ($wiki_skills as $s => $skill) {
 //  if($s > 10){

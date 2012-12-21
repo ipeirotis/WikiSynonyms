@@ -1,7 +1,7 @@
 wikiSyno
 ========
 
-Build a synonym table from Wikipedia
+TASK: Build a synonym table from Wikipedia
 ------------------------------------
 
 1. Download a Wikipedia dump using the instructions at http://en.wikipedia.org/wiki/Wikipedia:Database_download and store it in a MySQL database.
@@ -63,9 +63,6 @@ Build
 curl http://dumps.wikimedia.org/enwiki/latest/enwiki-latest-page.sql.gz -o page.sql.gz
 gunzip page.sql.gz
 
-curl http://dumps.wikimedia.org/enwiki/latest/enwiki-latest-category.sql.gz -o category.sql.gz
-gunzip category.sql.gz
-
 curl http://dumps.wikimedia.org/enwiki/latest/enwiki-latest-pagelinks.sql.gz -o pagelinks.sql.gz
 gunzip pagelinks.sql.gz
 
@@ -78,8 +75,6 @@ gunzip redirect.sql.gz
 mysql --host=... --user=... --pass=... DB_NAME &lt; page.sql
 
 mysql --host=... --user=... --pass=... DB_NAME &lt; pagelinks.sql
-
-mysql --host=... --user=... --pass=... DB_NAME &lt; category.sql
 
 mysql --host=... --user=... --pass=... DB_NAME &lt; categorylinks.sql
 
@@ -99,10 +94,19 @@ CREATE TABLE page_relation (
   tnamespace int NOT NULL,
   stitle varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   ttitle varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  stitle_cs varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  ttitle_cs varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (sid, tid)
-) 
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci
+);
+
+CREATE INDEX ix_sid ON page_relation (sid);  
+CREATE INDEX ix_tid ON page_relation (tid);
+
+CREATE INDEX ix_stitle ON page_relation (stitle);
+CREATE INDEX ix_ttitle ON page_relation (ttitle);
+
+CREATE INDEX ix_stitle_cs ON page_relation (stitle_cs);
+CREATE INDEX ix_ttitle_cs ON page_relation (ttitle_cs);
 </pre>
 
 and after that you can populate that
@@ -123,6 +127,10 @@ This query will need approximately an hour to execute and the table will have 6M
 Since the queries will be executed mainly on that table, once you create the page_relation table, you will want to create indexes on all attributes
 
 <pre>
+CREATE INDEX ix_stitle_cs ON DB_NAME.page_relation (stitle_cs)
+
+CREATE INDEX ix_ttitle_cs ON DB_NAME.page_relation (ttitle_cs)
+
 CREATE INDEX ix_stitle ON DB_NAME.page_relation (stitle)
 
 CREATE INDEX ix_ttitle ON DB_NAME.page_relation (ttitle)
@@ -151,30 +159,26 @@ FROM
 returns very few results, which are already fixed in the actual Wikipedia (so there seems to be an automatic process that fixes that part)
 
 
-Step 5: For this part of the project we created a mini platform with 2 actions (search and ajax).
+Step 5: For this part of the project we created a mini platform with 2 actions (search and api).
 -------------------------------------------------------------------------------------------------------------------------------
 
 Search action implements a graphical representation of the search results whereas Ajax performs as service an return a json encoded data set.
 
 A. Search
 
-By visiting project/index.php you are asked to enter a term to search and if synonyms found they are return as an ordered list.
+By visiting project/search you are asked to enter a term to search and if synonyms found they are return as an ordered list.
 
-B. Ajax
+B. API
 
-By visiting project/index.php?action=ajax&term=OUR TERM the search results are returned as a json encoded array 
+By visiting project/api/{TERM} the search results are returned as a json encoded array 
 <pre>
-{synonyms:[],total:NUM}
+{http: status code, message: status message, terms: [Array of terms]}
 </pre>
 
-The search is done by to queries (if needed) and 1 iteration of the first query results:
+Algorithm:
+----------
 
-<pre>
-SELECT * FROM page_relation WHERE (stitle = 'TERM' OR ttitle = 'TERM') AND snamespace = 0 AND tnamespace = 0;
-
-SELECT * FROM page_relation WHERE tid IN ARRAY_OF_BASE_PAGE_IDS_FROM_ITERATION;
-</pre>
-
+coming soon
 
 Step 6: Enhancement: We added a feature to search disambiguation pages so we add extra synonyms when searching for a keyword.
 -------------------------------------------------------------------------------------------------------------------------------
@@ -240,27 +244,23 @@ After that we search for skills in odesk skills table that match our synonyms an
 SELECT * FROM odesk_skills WHERE skill IN --ARRAY_OF_SYNONYMS_RETURNED_IN_STEP_5--
 </pre>
 
-return in ajax (JSON) is now:
-
-<pre>
-{synonyms:[], disambiguation:[], odesk:[], total:NUM}
-</pre>
-
 Step 8: Issues with capitalization and matching. (Issue #12)
 -------------------------------------------------------------------------------------------------------------------------------
 
 Using the query below we address a bit of the capitalization and matching issue:
 <pre>
-SELECT * FROM page_relation 
+--SELECT * FROM page_relation 
 WHERE (CONVERT(stitle USING latin1) COLLATE latin1_general_cs 'TERM' 
 OR CONVERT(ttitle USING latin1) COLLATE latin1_general_cs = 'TERM') 
 AND snamespace = 0 
-AND tnamespace = 0;
+AND tnamespace = 0;--
 </pre>
 We execute the query first and then we execute the case insensitive one if no results from the first one.
 Though the query takes too long to be executed due to the on-the-fly conversion of the collation, so that should be a <b>temporary solution</b>.
 
-<b>TODO: The best solution would be in step 4 to create a double table where we use case sensitive collation to perform the query without conversion on-the-fly.</b>
+--<b>TODO: The best solution would be in step 4 to create a double table where we use case sensitive collation to perform the query without conversion on-the-fly.</b>--
+
+Created 2 extra columns (see build) stitle_cs and ttitle_cs with case sensitive collation to search and resolve capitalization issues.
 
 
 Installation:
@@ -268,23 +268,20 @@ Installation:
 
 A. Requirements
 ---------------
-1. WEB server
-2. PHP
+1. PHP >= 5.2 
+2. Apatche WEB server
 3. MySQL
 
 B. DB setup
 -----------
 
 1. Create a DB
-2. Run /Tables.sql to create schema and then /odesk_skills.sql to add odesk skills to the db.
+2. Run /wikisyno_structure.sql to create schema and then /odesk_skills.sql to add odesk skills to the db.
 3. Fetch and import latest data from mediawiki. <b>(heavy process!!!)</b>
 
 <pre>
 curl http://dumps.wikimedia.org/enwiki/latest/enwiki-latest-page.sql.gz -o page.sql.gz
 gunzip page.sql.gz
-
-curl http://dumps.wikimedia.org/enwiki/latest/enwiki-latest-category.sql.gz -o category.sql.gz
-gunzip category.sql.gz
 
 curl http://dumps.wikimedia.org/enwiki/latest/enwiki-latest-pagelinks.sql.gz -o pagelinks.sql.gz
 gunzip pagelinks.sql.gz
@@ -298,8 +295,6 @@ gunzip redirect.sql.gz
 mysql --host=... --user=... --pass=... DB_NAME &lt; page.sql
 
 mysql --host=... --user=... --pass=... DB_NAME &lt; pagelinks.sql
-
-mysql --host=... --user=... --pass=... DB_NAME &lt; category.sql
 
 mysql --host=... --user=... --pass=... DB_NAME &lt; categorylinks.sql
 
@@ -330,6 +325,10 @@ This query will need approximately an hour to execute and the table will have 6M
 Since the queries will be executed mainly on that table, once you create the page_relation table, you will want to create indexes on all attributes
 
 <pre>
+CREATE INDEX ix_stitle_cs ON DB_NAME.page_relation (stitle_cs);
+
+CREATE INDEX ix_ttitle_cs ON DB_NAME.page_relation (ttitle_cs);
+
 CREATE INDEX ix_stitle ON DB_NAME.page_relation (stitle);
 
 CREATE INDEX ix_ttitle ON DB_NAME.page_relation (ttitle);
@@ -349,17 +348,24 @@ C. Running the Application
 --------------------------
 
 <b>GUI version:</b>
-Navigate to your HOST_ROOT/wikisyno/index.php?action=search OR HOST_ROOT/wikisyno/index.php (default action is search).
-There you can enter your query in the field and search for synonims.
+Navigate to your BASE_URL/search.
+There you can enter your query in the field and search for synonyms.
 
 <b>API version:</b>
-Navigate to your HOST_ROOT/wikisyno/index.php?action=ajax&term=YOUR_QUERY
+Navigate to your BASE_URL/api/{term}
 This will return a JSON encoded response with the results from search.
 FORMAT:
 <pre>
-{synonyms:[], disambiguation:[], odesk:[], total:NUM}
+{http: status code, message: status message, terms: [Array of terms]}
 </pre>
 
-NOTE!!!: You can pass a parameter (for test and debug only) pretty_print=true in order to get a structured for of the JSON response for better view.
-eg: HOST_ROOT/wikisyno/index.php?pretty_print=true&action=ajax&term=YOUR_QUERY
+D. Running Tests
+-------------------
+Requirements: 
+  -PHPUnit
+  -X-Debug
+Config:
+  Edit /tests/config/config.php
+  Create DB with the same schema (see installation). We create second one so you can run your tests with the fixtures provided.
+  When testing the test DB will de re-populated to assert results.
 

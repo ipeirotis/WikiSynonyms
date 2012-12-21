@@ -354,10 +354,16 @@ FORMAT:
 D. Running Tests
 -------------------
 Requirements: 
+
   -PHPUnit
+
   -X-Debug
+
 Config:
+
   Edit /tests/config/config.php
+
   Create DB with the same schema (see installation). We create second one so you can run your tests with the fixtures provided.
+
   When testing the test DB will de re-populated to assert results.
 

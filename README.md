@@ -249,16 +249,16 @@ Step 8: Issues with capitalization and matching. (Issue #12)
 
 Using the query below we address a bit of the capitalization and matching issue:
 <pre>
---SELECT * FROM page_relation 
+~~SELECT * FROM page_relation 
 WHERE (CONVERT(stitle USING latin1) COLLATE latin1_general_cs 'TERM' 
 OR CONVERT(ttitle USING latin1) COLLATE latin1_general_cs = 'TERM') 
 AND snamespace = 0 
-AND tnamespace = 0;--
+AND tnamespace = 0;~~
 </pre>
 We execute the query first and then we execute the case insensitive one if no results from the first one.
 Though the query takes too long to be executed due to the on-the-fly conversion of the collation, so that should be a <b>temporary solution</b>.
 
---<b>TODO: The best solution would be in step 4 to create a double table where we use case sensitive collation to perform the query without conversion on-the-fly.</b>--
+~~<b>TODO: The best solution would be in step 4 to create a double table where we use case sensitive collation to perform the query without conversion on-the-fly.</b>~~
 
 Created 2 extra columns (see build) stitle_cs and ttitle_cs with case sensitive collation to search and resolve capitalization issues.
 

@@ -1,5 +1,4 @@
 <?php
-$start = microtime(true);
 $non = array();
 
 $db_skills = Application::getAllOdeskSkills();
@@ -23,7 +22,7 @@ foreach ($skills as $k => $skill) {
   }
 }
 
-echo 'New: '.count($non).'<br/>';
+//echo 'New: '.count($non).'<br/>';
 
 if (count($non) > 0) {
   $fp = fopen(dirname(dirname(__FILE__)) . '/public/assets/produced/skills_to_add.json', 'w');
@@ -40,7 +39,6 @@ if (count($non) > 0) {
       0
       );
   }
-//  die(rtrim($query, ', '));
   try {
     Application::doConnect();
     mysql_query(rtrim($query, ', '));
@@ -51,14 +49,9 @@ if (count($non) > 0) {
 }
 $wiki_skills = Application::getAllOdeskSkillsWithExternalLink();
 
-echo 'With link: '.count($wiki_skills).'<br/>';
-
 $fp = fopen(dirname(dirname(__FILE__)) . '/public/assets/produced/file.csv', 'w');
 
 foreach ($wiki_skills as $s => $skill) {
-//  if($s > 10){
-//    break;
-//  }
   if (preg_match('/http:\/\/en.wikipedia.org\/wiki\//', $skill['external_link'])) {
     $v = str_replace('http://en.wikipedia.org/wiki/', '', $skill['external_link']);
     $query = sprintf("SELECT stitle FROM page_relation WHERE ttitle = '%s'", str_replace('http://en.wikipedia.org/wiki/', '', $v));
@@ -70,9 +63,11 @@ foreach ($wiki_skills as $s => $skill) {
     Application::doClose();
   }
 }
-
 fclose($fp);
-$end = microtime(true);
-echo 'Execution took: '.sprintf('%01.6f', $end - $start).'<br/>';
 
-die('DONE!!!');
+$output_file = dirname(dirname(__FILE__)) . '/public/assets/produced/file.csv';
+header("Content-Disposition: attachment; filename=\"" . basename($output_file) . "\"");
+header("Content-Type: application/force-download");
+header("Content-Length: " . filesize($output_file));
+header("Connection: close");
+die(readfile($output_file));

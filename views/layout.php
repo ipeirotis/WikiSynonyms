@@ -10,7 +10,11 @@
     <!-- Le styles -->
     <link href="<?php echo $this->make_route('/public/css/bootstrap.css')?>" rel="stylesheet"/>
     <link href="<?php echo $this->make_route('/public/css/main.css')?>" rel="stylesheet"/>
-
+    
+    <!-- javascript
+    ================================================== -->
+    <script type="text/javascript" src="<?php echo $this->make_route('/public/js/jquery.js') ?>"></script>
+    
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -44,12 +48,5 @@
 
     </div> 
     <!-- /container -->
-
-    <!-- javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="<?php echo $this->make_route('/public/js/jquery.js')?>"></script>
-    <script src="<?php echo $this->make_route('/public/js/bootstrap-min.js')?>"></script>
-    <script src="<?php echo $this->make_route('/public/js/application.js')?>"></script>
   </body>
 </html>

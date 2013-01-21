@@ -116,9 +116,10 @@ class Bones
 
   protected function get_route()
   {
-    parse_str($_SERVER['QUERY_STRING'], $route);
-    if ($route) {
-      return '/' . $route['request'];
+//    parse_str($_SERVER['QUERY_STRING'], $route);
+//    if ($route) {
+    if ($_SERVER['QUERY_STRING']) {
+      return '/' . str_replace('request=', '', $_SERVER['QUERY_STRING']);
     } else {
       return '/';
     }

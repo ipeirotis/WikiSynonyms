@@ -216,6 +216,7 @@ class Bones
 
   public function error500($exception)
   {
+    header('Content-type: text/html', true, 500);
     $this->set('exception', $exception);
     $this->render('error/500');
     exit;
@@ -223,6 +224,7 @@ class Bones
 
   public function error404()
   {
+    header('Content-type: text/html', true, 404);
     $this->render('error/404');
     exit;
   }

@@ -10,9 +10,11 @@
     <!-- Le styles -->
     <link href="<?php echo $this->make_route('/public/css/bootstrap.css')?>" rel="stylesheet"/>
     <link href="<?php echo $this->make_route('/public/css/font-awesome.min.css')?>" rel="stylesheet"/>
+    <link href="<?php echo $this->make_route('/public/css/fontello.css')?>" rel="stylesheet"/>
     <link href="<?php echo $this->make_route('/public/css/main.css')?>" rel="stylesheet"/>
     <!--[if IE 7]>
     <link rel="stylesheet" href="<?php echo $this->make_route('/public/css/font-awesome-ie7.min.css')?>">
+    <link rel="stylesheet" href="<?php echo $this->make_route('/public/css/fontello-ie7.css')?>">
     <![endif]-->
     <!-- javascript
     ================================================== -->
@@ -36,7 +38,7 @@
           <li class="<?php echo $this->is_active_route('/page/api') ? 'active' : '' ?>"><a href="<?php echo $this->make_route('/page/api') ?>">API</a></li>
           <li class="<?php echo $this->is_active_route('/page/contacts') ? 'active' : '' ?>"><a href="<?php echo $this->make_route('/page/contacts') ?>">Contact</a></li>
         </ul>
-        <h3 class="muted"><a class="muted" href="<?php echo $this->make_route('/') ?>">Wiki<span class="highlight">Synonyms</span></a></h3>
+        <h3 class="muted"><a class="muted" href="<?php echo $this->make_route('/') ?>"><span style="font-weight: 100;letter-spacing: 3px;font-family:'Times'">Wiki</span><span class="highlight">Synonyms</span></a></h3>
       </div>
 
       <hr>

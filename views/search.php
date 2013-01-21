@@ -42,7 +42,7 @@
               <?php if ($synonyms['http'] != 200): ?>
                 <a class="search-again" href="#"><i class="icon-search"></i> <?php echo $synonym ?></a>
               <?php else: ?>
-                <?php echo $synonym['term'] ?><?php if($synonym['canonical']) : ?>&nbsp;<abbr title="Canonical page"><i class="icon-ok-sign"></i></abbr><?php endif; ?><?php if($synonym['canonical']) : ?>&nbsp;<abbr title="oDesk Skill"><i class="icon-circle-blank"></i></abbr><?php endif; ?>
+                <?php echo $synonym['term'] ?><?php if($synonym['canonical']) : ?>&nbsp;<abbr title="Canonical page"><i style="font-weight: bold;" class="fontello-wikipedia"></i></abbr><?php endif; ?><?php if($synonym['canonical']) : ?>&nbsp;<abbr title="oDesk Skill"><i style="color:#7AC143;" class="icon-circle-blank"></i></abbr><?php endif; ?>
               <?php endif; ?>
             </li>
           <?php endforeach; ?>
@@ -50,8 +50,7 @@
         <?php if ($synonyms['http'] == 200): ?>
         <hr/>
         <h6 style="margin-bottom: 0;">Reference:</h6>
-        <i class="icon-ok-sign"></i>: Canonical page <br/>
-        <i class="icon-circle-blank"></i>: oDesk Skill
+        <i style="color:#7AC143;" class="icon-circle-blank"></i>: oDesk Skill, <i style="font-weight: bold;" class="fontello-wikipedia"></i>: Canonical page 
         <?php endif; ?>
       </div>
     </div> 

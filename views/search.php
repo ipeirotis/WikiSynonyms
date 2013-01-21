@@ -47,6 +47,12 @@
             </li>
           <?php endforeach; ?>
         </ol>
+        <?php if ($synonyms['http'] == 200): ?>
+        <hr/>
+        <h6 style="margin-bottom: 0;">Reference:</h6>
+        <i class="icon-ok-sign"></i>: Canonical page <br/>
+        <i class="icon-circle-blank"></i>: oDesk Skill
+        <?php endif; ?>
       </div>
     </div> 
   </div> 

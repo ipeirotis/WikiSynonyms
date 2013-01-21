@@ -108,6 +108,49 @@ class Application
     return $data;
   }
   
+  static function isOdeskSkill($term)
+  {
+    if (!$term) {
+      return null;
+    }
+
+    $data = array();
+
+    self::doConnect();
+
+    $query = sprintf("SELECT * FROM odesk_skills WHERE external_link = '%s'", 'http://en.wikipedia.org/wiki/' . str_replace(' ', '_', $term));
+    $result = mysql_query($query);
+    $rows = mysql_num_rows($result);
+    self::doClose();
+    if ($rows > 0) {
+      return true;
+    }
+    return false;
+  }
+
+  static function getOdeskSkillsWithExternalLinksIn($terms=array())
+  {
+    if (!$terms || empty($terms)) {
+      return null;
+    }
+    $data = array();
+    $terms_q_array = array();
+    foreach ($terms as $term) {
+      $terms_q_array[] = 'http://en.wikipedia.org/wiki/' . str_replace(' ', '_', $term['term']);
+    }
+    
+    $query = sprintf("SELECT * FROM odesk_skills WHERE external_link IN ('%s')", implode("','", $terms_q_array));
+//    die($query);
+    $result = mysql_query($query);
+    if ($result) {
+      while ($row = mysql_fetch_assoc($result)) {
+        $data[] = str_replace('http://en.wikipedia.org/wiki/', '', $row['external_link']);
+      }
+    }
+    self::doClose();
+    return $data;
+  }
+
   /**
    * Function getDisambiguationLinks
    *
@@ -137,7 +180,7 @@ class Application
     }
     return null;
   }
-  
+
   /**
    * Function checkDisambiguation
    *
@@ -177,7 +220,7 @@ class Application
     }
     return $out;
   }
-  
+
   /**
    * Function checkDisambiguations
    *
@@ -289,7 +332,7 @@ class Application
       if (count($data2) > 1) {
         return array(
           'http' => 204,
-          'message' => 'Very bad query???',
+          'message' => 'Bad query.',
         );
       } elseif (count($data2) < 1) {
         $terms = array();
@@ -309,12 +352,26 @@ class Application
             'terms' => self::getDisambiguationLinks($data2[0]['tid'])
           );
         } else {
-          $synoms = array(str_replace('_', ' ', $data2[0]['ttitle']));
-          $query2 = "SELECT * FROM page_relation WHERE tid = '" . $data2[0]['tid'] . "'";
+          $synoms = array(array(
+              'term' => str_replace('_', ' ', $data2[0]['ttitle']),
+              'canonical' => 1
+            ));
+          $query_s = "SELECT * FROM page_relation WHERE tid = '" . $data2[0]['tid'] . "'";
           self::doConnect();
-          $result2 = mysql_query($query2);
-          while ($row2 = mysql_fetch_assoc($result2)) {
-            $synoms[] = str_replace('_', ' ', $row2['stitle']);
+          $result_s = mysql_query($query_s);
+          while ($row_s = mysql_fetch_assoc($result_s)) {
+            $synoms[] = array(
+              'term' => str_replace('_', ' ', $row_s['stitle']),
+              'canonical' => 0,
+            );
+          }
+          $oskills = self::getOdeskSkillsWithExternalLinksIn($synoms);
+          foreach ($synoms as $key => $synom) {
+            if (in_array(str_replace(' ', '_', $synom['term']), $oskills)) {
+              $synoms[$key]['oskill'] = 1;
+            } else {
+              $synoms[$key]['oskill'] = 0;
+            }
           }
           self::doClose();
           return array(
@@ -337,12 +394,26 @@ class Application
           'terms' => self::getDisambiguationLinks($data[0]['tid'])
         );
       } else {
-        $synoms = array(str_replace('_', ' ', $data[0]['ttitle']));
+        $synoms = array(array(
+            'term' => str_replace('_', ' ', $data[0]['ttitle']),
+            'canonical' => 1
+          ));
         $query_s = "SELECT * FROM page_relation WHERE tid = '" . $data[0]['tid'] . "'";
         self::doConnect();
         $result_s = mysql_query($query_s);
         while ($row_s = mysql_fetch_assoc($result_s)) {
-          $synoms[] = str_replace('_', ' ', $row_s['stitle']);
+          $synoms[] = array(
+            'term' => str_replace('_', ' ', $row_s['stitle']),
+            'canonical' => 0,
+          );
+        }
+        $oskills = self::getOdeskSkillsWithExternalLinksIn($synoms);
+        foreach ($synoms as $key => $synom) {
+          if (in_array(str_replace(' ', '_', $synom['term']), $oskills)) {
+            $synoms[$key]['oskill'] = 1;
+          } else {
+            $synoms[$key]['oskill'] = 0;
+          }
         }
         self::doClose();
         return array(

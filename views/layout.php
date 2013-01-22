@@ -31,6 +31,7 @@
     <div class="container">
 
       <div class="masthead">
+        <?php if ($this->render_menu()) : ?>
         <ul class="nav nav-pills pull-right">
           <li class="<?php echo $this->is_active_route('/') ? 'active' : '' ?>"><a href="<?php echo $this->make_route('/') ?>">Home</a></li>
           <li class="<?php echo $this->is_active_route('/search') ? 'active' : '' ?>"><a href="<?php echo $this->make_route('/search') ?>">Search</a></li>
@@ -38,6 +39,7 @@
           <li class="<?php echo $this->is_active_route('/page/api') ? 'active' : '' ?>"><a href="<?php echo $this->make_route('/page/api') ?>">API</a></li>
           <li class="<?php echo $this->is_active_route('/page/contacts') ? 'active' : '' ?>"><a href="<?php echo $this->make_route('/page/contacts') ?>">Contact</a></li>
         </ul>
+        <?php endif; ?>
         <h3 class="muted"><a class="muted" href="<?php echo $this->make_route('/') ?>"><span style="font-weight: 100;letter-spacing: 3px;font-family:'Times'">Wiki</span><span class="highlight">Synonyms</span></a></h3>
       </div>
 

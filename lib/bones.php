@@ -52,6 +52,7 @@ class Bones
   public $route_segments = array();
   public $route_variables = array();
   public $couch;
+  public static $render_menu = true;
 
   public function __construct()
   {
@@ -67,9 +68,17 @@ class Bones
     }
     return self::$instance;
   }
+  public static function render_menu()
+  {
+    return self::$render_menu;
+  }
 
   public static function register($route, $callback_name, $method)
   {
+    if (file_exists(ROOT.'/maintenance.php')) {
+      $bones = self::get_instance();
+      $bones->maintenance();
+    }
     if (!self::$route_found) {
       $bones = self::get_instance();
       $url_parts = explode('/', trim($route, '/'));
@@ -226,6 +235,15 @@ class Bones
   {
     header('Content-type: text/html', true, 404);
     $this->render('error/404');
+    exit;
+  }
+  public function maintenance()
+  {
+    header("HTTP/1.1 503 Service Temporarily Unavailable");  
+    header("Status: 503 Service Temporarily Unavailable");  
+    header("Retry-After: 3600");  
+    self::$render_menu = false;
+    $this->render('error/maintenance');
     exit;
   }
 

@@ -1,15 +1,15 @@
 <?php
 
 require_once 'config/config.php';
-require_once PHPU_PATH.'/Extensions/Database/TestCase.php';
+require_once PHPU_PATH.'Extensions/Database/TestCase.php';
 require_once dirname(dirname(__FILE__)) . '/lib/application.php';
 
 class ApplicationTest extends PHPUnit_Extensions_Database_TestCase
 {
 
   var $App;
-  static $conn = null;
-  static $pdo = null;
+  static private $pdo = null;
+  private $conn = null;
 
   function setUp()
   {

@@ -260,7 +260,7 @@ Installation:
 
 A. Requirements
 ---------------
-1. PHP >= 5.2 
+1. PHP >= 5.2 (>=5.3 recommended)
 2. Apatche WEB server
 3. MySQL
 
@@ -355,9 +355,9 @@ D. Running Tests
 -------------------
 Requirements: 
 
-  -PHPUnit
+  -PHPUnit --v3.7
 
-  -X-Debug
+  -X-Debug (v2.2 +)
 
 Config:
 

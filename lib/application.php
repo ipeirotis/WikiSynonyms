@@ -365,6 +365,7 @@ class Application
               'canonical' => 0,
             );
           }
+          self::doClose();
           $oskills = self::getOdeskSkillsWithExternalLinksIn($synoms);
           foreach ($synoms as $key => $synom) {
             if (in_array(str_replace(' ', '_', $synom['term']), $oskills)) {
@@ -373,7 +374,6 @@ class Application
               $synoms[$key]['oskill'] = 0;
             }
           }
-          self::doClose();
           return array(
             'http' => 200,
             'message' => 'success',
@@ -407,6 +407,7 @@ class Application
             'canonical' => 0,
           );
         }
+        self::doClose();
         $oskills = self::getOdeskSkillsWithExternalLinksIn($synoms);
         foreach ($synoms as $key => $synom) {
           if (in_array(str_replace(' ', '_', $synom['term']), $oskills)) {
@@ -415,7 +416,6 @@ class Application
             $synoms[$key]['oskill'] = 0;
           }
         }
-        self::doClose();
         return array(
           'http' => 200,
           'message' => 'success',

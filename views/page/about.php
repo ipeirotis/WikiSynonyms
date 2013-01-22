@@ -249,7 +249,7 @@ Though the query takes too long to be executed due to the on-the-fly conversion 
 <a name="a-requirements" class="anchor" href="#a-requirements"><span class="mini-icon mini-icon-link"></span></a>A. Requirements</h2>
 
 <ol>
-<li>PHP &gt;= 5.2 </li>
+<li>PHP &gt;= 5.2 (&gt;=5.3 recommended)</li>
 <li>Apatche WEB server</li>
 <li>MySQL</li>
 </ol><h2>
@@ -341,8 +341,10 @@ FORMAT:</p>
 <a name="d-running-tests" class="anchor" href="#d-running-tests"><span class="mini-icon mini-icon-link"></span></a>D. Running Tests</h2>
 
 <p>Requirements: <br/>
-  -PHPUnit<br/>
-  -X-Debug<br/>
+  -PHPUnit --v3.7
+  <br/>
+  -X-Debug (v2.2 +)
+  <br/>
 Config:<br/>
   Edit /tests/config/config.php<br/>
   Create DB with the same schema (see installation). We create second one so you can run your tests with the fixtures provided.<br/>

@@ -22,7 +22,7 @@ class CronTest extends PHPUnit_Framework_TestCase
   {
     $assert = FALSE;
     try {
-      $this->Cron->refreshOdeskSkills(2, true);
+      $this->Cron->refreshOdeskSkills(true, 2);
       $assert = TRUE;
     } catch (Exception $exc) {
     }

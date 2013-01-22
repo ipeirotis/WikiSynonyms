@@ -25,7 +25,7 @@ class Cron
    * @param boolean force Boolean parameter if we need to force/sleep the iteration to avoid throttling from odesk server. 
    * @return void
    */
-  static function refreshOdeskSkills($stop = null, $force = false)
+  static function refreshOdeskSkills($force = false, $stop = null)
   {
     try {
       $odesk_skills = json_decode(file_get_contents('http://www.odesk.com/api/profiles/v1/metadata/skills.json'));
@@ -52,6 +52,51 @@ class Cron
       $fp = fopen(dirname(dirname(__FILE__)) . '/public/assets/cron_p/odesk-skills.sql', 'w');
       fwrite($fp, $query);
       fclose($fp);
+    } catch (Exception $e) {
+      throw new Exception($e->getMessage());
+    }
+  }
+
+  static function cleanUpOdeskSkills()
+  {
+    $data = array();
+    try {
+      $odesk_skills = json_decode(file_get_contents('http://www.odesk.com/api/profiles/v1/metadata/skills.json'));
+      $skills = $odesk_skills->skills;
+
+      self::doConnect();
+
+      $query = sprintf("SELECT skill FROM odesk_skills WHERE skill NOT IN ('%s')", implode("','", $skills));
+
+      $result = mysql_query($query);
+
+      if ($result) {
+        while ($row = mysql_fetch_assoc($result)) {
+          $data[] = $row['skill'];
+        }
+      }
+      self::doClose();
+    } catch (Exception $e) {
+      throw new Exception($e->getMessage());
+    }
+    try {
+      if (count($data) > 0) {
+        self::doConnect();
+        $d_query = sprintf("DELETE FROM odesk_skills WHERE skill IN ('%s')", implode("','", $data));
+        $result = mysql_query($d_query);
+        if (!$result) {
+          echo "DELETE failed: $d_query<br />" .
+          mysql_error() . "<br /><br />";
+        } else {
+          echo "Delete success:<br />" .
+            count($data) . ' items deleted: ' . implode(", ", $data) . '<br />' .
+            $d_query
+          ;
+        }
+        self::doClose();
+      } else {
+        echo 'Nothing to clean up.';
+      }
     } catch (Exception $e) {
       throw new Exception($e->getMessage());
     }

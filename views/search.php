@@ -42,7 +42,7 @@
               <?php if ($synonyms['http'] != 200): ?>
                 <a class="search-again" href="#"><i class="icon-search"></i> <?php echo $synonym ?></a>
               <?php else: ?>
-                <?php echo $synonym['term'] ?><?php if($synonym['canonical']) : ?>&nbsp;<abbr title="Canonical page"><i style="font-weight: bold;" class="fontello-wikipedia"></i></abbr><?php endif; ?><?php if($synonym['canonical']) : ?>&nbsp;<abbr title="oDesk Skill"><i style="color:#7AC143;" class="icon-circle-blank"></i></abbr><?php endif; ?>
+                <?php echo $synonym['term'] ?><?php if($synonym['canonical']) : ?>&nbsp;<abbr title="Canonical page"><i style="font-weight: bold;" class="fontello-wikipedia"></i></abbr><?php endif; ?><?php if($synonym['oskill']) : ?>&nbsp;<abbr title="oDesk Skill"><i style="color:#7AC143;" class="icon-circle-blank"></i></abbr><?php endif; ?>
               <?php endif; ?>
             </li>
           <?php endforeach; ?>

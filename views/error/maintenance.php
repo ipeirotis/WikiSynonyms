@@ -1,6 +1,6 @@
 <div class="hero-unit">
-    <h1>Service Temporarily Unavailable</h1>
-    <p>
-        We are sorry for the inconvenience! We are under maintenance at the moment. Please come back later.
-    </p>
+    <h2><i class="icon-cogs"></i> Service Temporarily Unavailable!</h2>
+    We are sorry for the inconvenience. Service is under maintenance at the moment.
+    <br/>
+    Please come back later.
 </div>

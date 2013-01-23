@@ -138,9 +138,8 @@ class Application
     foreach ($terms as $term) {
       $terms_q_array[] = 'http://en.wikipedia.org/wiki/' . str_replace(' ', '_', $term['term']);
     }
-    
+    self::doConnect();
     $query = sprintf("SELECT * FROM odesk_skills WHERE external_link IN ('%s')", implode("','", $terms_q_array));
-//    die($query);
     $result = mysql_query($query);
     if ($result) {
       while ($row = mysql_fetch_assoc($result)) {

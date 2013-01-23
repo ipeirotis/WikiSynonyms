@@ -75,7 +75,7 @@ class Bones
 
   public static function register($route, $callback_name, $method)
   {
-    if (file_exists(ROOT.'/maintenance.php')) {
+    if (file_exists(ROOT.'/web/maintenance.php')) {
       $bones = self::get_instance();
       $bones->maintenance();
     }

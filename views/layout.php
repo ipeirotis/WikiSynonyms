@@ -8,17 +8,19 @@
     <meta name="author" content=""/>
 
     <!-- Le styles -->
-    <link href="<?php echo $this->make_route('/public/css/bootstrap.css')?>" rel="stylesheet"/>
-    <link href="<?php echo $this->make_route('/public/css/font-awesome.min.css')?>" rel="stylesheet"/>
-    <link href="<?php echo $this->make_route('/public/css/fontello.css')?>" rel="stylesheet"/>
-    <link href="<?php echo $this->make_route('/public/css/main.css')?>" rel="stylesheet"/>
+    <link href="<?php echo $this->make_route('/css/bootstrap.css')?>" rel="stylesheet"/>
+    <link href="<?php echo $this->make_route('/css/font-awesome.min.css')?>" rel="stylesheet"/>
+    <link href="<?php echo $this->make_route('/css/fontello.css')?>" rel="stylesheet"/>
+    <link href="<?php echo $this->make_route('/css/main.css')?>" rel="stylesheet"/>
     <!--[if IE 7]>
-    <link rel="stylesheet" href="<?php echo $this->make_route('/public/css/font-awesome-ie7.min.css')?>">
-    <link rel="stylesheet" href="<?php echo $this->make_route('/public/css/fontello-ie7.css')?>">
+    <link rel="stylesheet" href="<?php echo $this->make_route('/css/font-awesome-ie7.min.css')?>">
+    <link rel="stylesheet" href="<?php echo $this->make_route('/css/fontello-ie7.css')?>">
     <![endif]-->
     <!-- javascript
     ================================================== -->
-    <script type="text/javascript" src="<?php echo $this->make_route('/public/js/jquery.js') ?>"></script>
+    <script type="text/javascript" src="<?php echo $this->make_route('/js/jquery.js') ?>"></script>
+    <script type="text/javascript" src="<?php echo $this->make_route('/js/bootstrap.js') ?>"></script>
+    <script type="text/javascript" src="<?php echo $this->make_route('/js/application.js') ?>"></script>
     
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>

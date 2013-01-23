@@ -128,3 +128,23 @@ div#main {
   outline: thin dotted \9;
   /* IE6-8 */
 }
+ul.terms-list {
+  margin: 0;
+}
+ul.terms-list li {
+  list-style: none;
+  margin: 0;
+}
+
+ul.terms-list li span.term-marking {
+  border-right: 1px solid #000;
+  display: inline-block;
+  height: 20px;
+  margin-right: 6px;
+  overflow: hidden;
+  width: 50px;
+}
+ul.terms-list li span.term-marking abbr {
+  border-bottom-width: 0;
+  padding: 0 3px 0 0;
+}

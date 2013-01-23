@@ -33,25 +33,22 @@
             </div>
           <?php endif; ?>
         <?php else: ?>
-          <h4>Synonyms:</h4>
+        <?php if ($synonyms['http'] == 200): ?>
+        <h4>Synonyms: <small>( <i style="color:#000;" class="fontello-wikipedia"></i>: Canonical page, <i style="color:#7AC143;" class="icon-circle-blank"></i>: oDesk Skill )</small></h4>
         <?php endif; ?>
         <hr/>
-        <ol>
-          <?php foreach ($synonyms['terms'] as $synonym) : ?>
+        <?php endif; ?>
+        <ul class="terms-list">
+          <?php foreach ($synonyms['terms'] as $key => $synonym) : ?>
             <li>
               <?php if ($synonyms['http'] != 200): ?>
                 <a class="search-again" href="#"><i class="icon-search"></i> <?php echo $synonym ?></a>
               <?php else: ?>
-                <?php echo $synonym['term'] ?><?php if($synonym['canonical']) : ?>&nbsp;<abbr title="Canonical page"><i style="font-weight: bold;" class="fontello-wikipedia"></i></abbr><?php endif; ?><?php if($synonym['oskill']) : ?>&nbsp;<abbr title="oDesk Skill"><i style="color:#7AC143;" class="icon-circle-blank"></i></abbr><?php endif; ?>
+                <span class="term-marking"><?php if($synonym['canonical']) : ?><abbr title="Canonical page"><i style="color:#000;" class="fontello-wikipedia"></i></abbr><?php endif; ?>&nbsp;<?php if($synonym['oskill']) : ?><abbr title="oDesk Skill"><i style="color:#7AC143;" class="icon-circle-blank"></i></abbr><?php endif; ?></span><span class="term"><?php echo $key+1 . '. ' . $synonym['term'] ?></span>
               <?php endif; ?>
             </li>
           <?php endforeach; ?>
-        </ol>
-        <?php if ($synonyms['http'] == 200): ?>
-        <hr/>
-        <h6 style="margin-bottom: 0;">Reference:</h6>
-        <i style="color:#7AC143;" class="icon-circle-blank"></i>: oDesk Skill, <i style="font-weight: bold;" class="fontello-wikipedia"></i>: Canonical page 
-        <?php endif; ?>
+        </ul>
       </div>
     </div> 
   </div> 

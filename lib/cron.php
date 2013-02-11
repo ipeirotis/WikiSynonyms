@@ -61,7 +61,7 @@ class Cron
         }
         echo $skill . ' OK ' . "\n";
         $skill_data = json_decode($response);
-        $query .= sprintf("('%s', '%s', '%s', '%s', %s)", mysql_real_escape_string($skill_data->skill->skill), mysql_real_escape_string($skill_data->skill->skill), mysql_real_escape_string($skill_data->skill->external_link), mysql_real_escape_string($skill_data->skill->description), 0
+        $query .= sprintf("('%s', '%s', '%s', '%s', %s)", $skill_data->skill->skill, $skill_data->skill->skill, $skill_data->skill->external_link, $skill_data->skill->description, 0
         );
         $i++;
         if ($i >= $count) {

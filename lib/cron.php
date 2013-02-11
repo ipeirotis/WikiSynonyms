@@ -48,7 +48,7 @@ class Cron
     try {
       $odesk_skills = json_decode(file_get_contents('http://www.odesk.com/api/profiles/v1/metadata/skills.json'));
       $skills = $odesk_skills->skills;
-
+      self::doConnect();
       $query = 'TRUNCATE TABLE ipeirotis.odesk_skills;' . "\n";
       
       $query .= 'INSERT INTO odesk_skills (skill, pretty_name, external_link, description, wikipedia_page_id) VALUES ' . "\n";
@@ -74,6 +74,7 @@ class Cron
       $fp = fopen(dirname(dirname(__FILE__)) . '/web/assets/cron_p/odesk-skills.sql', 'w');
       fwrite($fp, $query);
       fclose($fp);
+      self::doClose();
     } catch (Exception $e) {
       throw new Exception($e->getMessage());
     }

@@ -1,0 +1,1 @@
+TRUNCATE TABLE odesk_skills;

@@ -49,7 +49,7 @@ class Cron
       $odesk_skills = json_decode(file_get_contents('http://www.odesk.com/api/profiles/v1/metadata/skills.json'));
       $skills = $odesk_skills->skills;
       self::doConnect();
-      $query = 'TRUNCATE TABLE ipeirotis.odesk_skills;' . "\n";
+      $query = 'TRUNCATE TABLE odesk_skills;' . "\n";
       
       $query .= 'INSERT INTO odesk_skills (skill, pretty_name, external_link, description, wikipedia_page_id) VALUES ' . "\n";
       $i = 0;
@@ -64,13 +64,16 @@ class Cron
         $query .= sprintf("('%s', '%s', '%s', '%s', %s)", mysql_real_escape_string($skill_data->skill->skill), mysql_real_escape_string($skill_data->skill->skill), $skill_data->skill->external_link ? mysql_real_escape_string($skill_data->skill->external_link) : '', $skill_data->skill->description ? mysql_real_escape_string($skill_data->skill->description) : '', 0
         );
         $i++;
-        if ($i >= $count) {
-          $query .= ";";
-          break;
-        } else {
+//        if ($i >= $count) {
+//          $query .= ";";
+//          break;
+//        } else {
           $query .= ",\n";
-        }
+//        }
       }
+      
+      $query = rtrim($query, ",\n") . ';';
+      
       $fp = fopen(dirname(dirname(__FILE__)) . '/web/assets/cron_p/odesk-skills.sql', 'w');
       fwrite($fp, $query);
       fclose($fp);

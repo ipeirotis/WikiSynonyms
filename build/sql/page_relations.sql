@@ -3,4 +3,4 @@ SELECT s.rd_from as sid, t.page_id as tid, p.page_namespace as snamespace, t.pag
 FROM redirect s 
 JOIN page p ON (s.rd_from = p.page_id)
 JOIN page t ON (s.rd_namespace = t.page_namespace AND s.rd_title = t.page_title)
-WHERE 1;
+WHERE 1

@@ -1,4 +1,4 @@
-wikiSyno
+WikiSynonyms
 ========
 
 TASK: Build a synonym table from Wikipedia
